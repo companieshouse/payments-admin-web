@@ -12,7 +12,7 @@
 	<groupId>uk.gov.companieshouse</groupId>
 	<artifactId>payments.admin.web</artifactId>
 	<version>unversioned</version>
-	<name>payments.admin.web</name>
+	<name>payments.admin.web.ch.gov.uk</name>
 	<description>Admin web app for finance to manage payments</description>
 
 	<properties>
