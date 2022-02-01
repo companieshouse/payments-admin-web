@@ -1,4 +1,4 @@
-app_name: payments.admin.web.ch.gov.uk
+app_name: payments-admin-web
 group: web
 weight: 900
 routes:

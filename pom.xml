@@ -10,9 +10,9 @@
 	</parent>
 
 	<groupId>uk.gov.companieshouse</groupId>
-	<artifactId>payments.admin.web.ch.gov.uk</artifactId>
+	<artifactId>payments-admin-web</artifactId>
 	<version>unversioned</version>
-	<name>payments.admin.web.ch.gov.uk</name>
+	<name>payments-admin-web</name>
 	<description>Admin web app for finance to manage payments</description>
 
 	<properties>

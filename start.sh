@@ -1,13 +1,13 @@
 #!/bin/bash
 #
-# Start script for payments.admin.web.ch.gov.uk
+# Start script for payments-admin-web
 
 APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ -z "${MESOS_SLAVE_PID}" ]]; then
     source ~/.chs_env/private_env
     source ~/.chs_env/global_env
-    source ~/.chs_env/payments.admin.web.ch.gov.uk/env
+    source ~/.chs_env/payments-admin-web/env
 
     PORT="${PAYMENTS_ADMIN_WEB_PORT}"
 else
@@ -28,4 +28,4 @@ else
 fi
 
 
-exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "${APP_DIR}/payments.admin.web.ch.gov.uk.jar"
+exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "${APP_DIR}/payments-admin-web.jar"
