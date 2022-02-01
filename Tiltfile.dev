@@ -1,11 +1,11 @@
 local_resource(
-  name = 'dev:payments-admin-web-ch-gov-uk-build',
+  name = 'dev:payments-admin-web-build',
   cmd = 'mvn compile',
   deps = ['src']
 )
 
 custom_build(
-   ref = '169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/payments.admin.web.ch.gov.uk',
+   ref = '169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/payments-admin-web',
    command = 'mvn compile jib:dockerBuild -Dimage=$EXPECTED_REF',
    live_update = [
      sync(

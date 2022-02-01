@@ -1,4 +1,4 @@
-artifact_name       := payments.admin.web.ch.gov.uk
+artifact_name       := payments-admin-web
 version             := "unversioned"
 
 .PHONY: all
