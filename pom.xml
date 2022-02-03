@@ -19,6 +19,7 @@
 		<java.version>1.8</java.version>
 		<thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
 		<structured-logging.version>1.9.14</structured-logging.version>
+		<common-web-java.version>1.5.1</common-web-java.version>
 	</properties>
 
 	<dependencies>
@@ -43,6 +44,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>uk.gov.companieshouse</groupId>
+			<artifactId>common-web-java</artifactId>
+			<version>${common-web-java.version}</version>
 		</dependency>
 
 		<!-- Security dependencies -->
