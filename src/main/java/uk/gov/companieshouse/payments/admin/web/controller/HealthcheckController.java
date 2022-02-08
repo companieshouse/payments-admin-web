@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HealthcheckController {
 
-    @GetMapping(value = "/payments-admin/healthcheck")
+    @GetMapping(value = "/admin/payments/healthcheck")
     public ResponseEntity<?> performHealthCheck() {
         return new ResponseEntity<>(HttpStatus.OK);
     }

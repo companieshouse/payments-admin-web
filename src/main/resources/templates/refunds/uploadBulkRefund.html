@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/baseLayout}">
+
+<head>
+    <title>Payments service refunds</title>
+</head>
+<div layout:fragment="content">
+
+    <div class="govuk-width-container ">
+        <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <form action="/payments-admin/refunds" method="post">
+                        <h1 class="govuk-heading-l">Upload file refund for GOV.UK Pay</h1>
+                        <div class="govuk-form-group">
+                            <label class="govuk-label" for="upload-refunds">
+                                Upload a file
+                            </label>
+                            <input class="govuk-file-upload" id="upload-refunds" name="upload-refunds" type="file">
+                        </div>
+                        <button class="govuk-button" data-module="govuk-button">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</html>
