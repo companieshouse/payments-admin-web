@@ -13,7 +13,7 @@
         <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
-                    <form action="/payments-admin/refunds" method="post">
+                    <form id="uploadrefundfile" th:action="@{''}" th:object="${uploadrefundfile}" method="post" class="form">
                         <h1 class="govuk-heading-l">Upload refund file for GOV.UK Pay</h1>
                         <div class="govuk-form-group">
                             <label class="govuk-label" for="upload-refunds">
@@ -21,9 +21,9 @@
                             </label>
                             <input class="govuk-file-upload" id="upload-refunds" name="upload-refunds" type="file">
                         </div>
-                        <button class="govuk-button" data-module="govuk-button">
-                            Submit
-                        </button>
+                        <div class="form-group">
+                            <input id="next-button" class="govuk-button" data-event-id="Submit" type="submit" role="button" value="Submit"/>
+                        </div>
                     </form>
                 </div>
             </div>
