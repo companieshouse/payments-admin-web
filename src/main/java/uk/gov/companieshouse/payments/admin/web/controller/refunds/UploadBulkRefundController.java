@@ -21,6 +21,6 @@ public class UploadBulkRefundController {
     public String postUploadBulkRefund() {
 
         //TODO - Change to summary page when implemented
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + "/admin/payments/refunds";
+        return "https://find-and-update.company-information.service.gov.uk/";
     }
 }
