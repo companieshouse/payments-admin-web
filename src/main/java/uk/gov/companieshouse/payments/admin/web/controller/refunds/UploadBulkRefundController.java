@@ -21,6 +21,6 @@ public class UploadBulkRefundController {
     public String postUploadBulkRefund() {
 
         //TODO - Change to summary page when implemented
-        return "https://find-and-update.company-information.service.gov.uk/";
+        return "redirect:https://find-and-update.company-information.service.gov.uk/";
     }
 }
