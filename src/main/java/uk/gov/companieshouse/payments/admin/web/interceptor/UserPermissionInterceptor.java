@@ -22,7 +22,7 @@ public class UserPermissionInterceptor implements HandlerInterceptor{
 
         Map<String, Object> userPermissions = sessionService.getUserPermissions();
 
-        Integer refundPermission = (Integer) userPermissions.get("/admin/bulk-refunds");
+        Integer refundPermission = (Integer) userPermissions.get("/admin/payments-bulk-refunds");
 
         if (modelAndView != null && (refundPermission == null || refundPermission != 1)) {
             modelAndView.setViewName("refunds/pageNotFound");
