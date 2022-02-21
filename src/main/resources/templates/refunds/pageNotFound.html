@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/baseLayout}">
+
+<head>
+    <title>Payments service refunds</title>
+</head>
+<div layout:fragment="content">
+
+    <div class="govuk-width-container ">
+        <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <h1 id="page-not-found-header" class="govuk-heading-l">Page not found</h1>
+                    <p class="govuk-body">If you typed the web address, check it is correct.<p>
+                    <p class="govuk-body">If you pasted the web address, check you copied the entire address.</p>
+                    <p class="govuk-body">Return to the <a th:href="@{{chsUrl}(chsUrl=${@environment.getProperty('chs.url')})}">Companies House home page</a>.</p>
+                    <p></p>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</html>
