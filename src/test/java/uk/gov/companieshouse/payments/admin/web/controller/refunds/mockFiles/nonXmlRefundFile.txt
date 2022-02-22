@@ -1,0 +1,10 @@
+<!DOCTYPE batchService PUBLIC"-//xPay//DTD xPay batchService v1//EN" http://dtd/xPay/batchService v1.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<batchService version="1.0" merchantCode="12345678" batchCode="XX0987654321">
+<refund reference="12345678-87654321" orderCode="987654321-123456789>
+<amount value="27.00" currencyCode="GBP" exponent="2"/>
+</refund>
+<refund reference="8888888-4444444" orderCode="55555555-444444444">
+<amount value="12.00" currencyCode="GBP" exponent="2"/>
+</refund>
+</batchService>
