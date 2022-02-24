@@ -53,8 +53,8 @@ public class Application implements WebMvcConfigurer{
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(userPermissionInterceptor);
-		registry.addInterceptor(userDetailsInterceptor);
+		registry.addInterceptor(userPermissionInterceptor).excludePathPatterns("/admin/payments/healthcheck");
+		registry.addInterceptor(userDetailsInterceptor).excludePathPatterns("/admin/payments/healthcheck");
 	}
 
 }
