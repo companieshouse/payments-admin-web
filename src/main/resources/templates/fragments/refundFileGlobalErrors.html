@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title></title>
+</head>
+<body>
+<div th:fragment="globalErrors" th:if="${#fields.hasErrors('*')}">
+    <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+        <h2 class="govuk-error-summary__title" id="error-summary-heading">There is a problem</h2>
+        <p id="error-summary-subheading">We were unable to upload the file. Before you try uploading the file again, check that:</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>it is in XML format</li>
+            <li>it is 512kb or smaller</li>
+            <li>there are no data fields missing</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
