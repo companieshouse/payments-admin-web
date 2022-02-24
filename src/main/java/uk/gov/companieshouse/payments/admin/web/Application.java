@@ -33,7 +33,7 @@ public class Application implements WebMvcConfigurer{
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(userPermissionInterceptor).excludePathPatterns("/admin/payments/healthcheck");
 		registry.addInterceptor(userDetailsInterceptor).excludePathPatterns("/admin/payments/healthcheck");
-		registry.addInterceptor(loggingInterceptor);
+		registry.addInterceptor(loggingInterceptor).excludePathPatterns("/admin/payments/healthcheck");
 	}
 
 }
