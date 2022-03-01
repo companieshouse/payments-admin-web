@@ -16,6 +16,7 @@ import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/admin/payments/refunds")
@@ -52,6 +53,10 @@ public class UploadBulkRefundController extends BaseController {
         } catch (ServiceException e){
             LOGGER.errorRequest(request, e.getMessage(), e);
             return "redirect:https://www.google.co.uk";
+        } catch (IOException e) {
+            LOGGER.errorRequest(request, e.getMessage(), e);
+            return "redirect:https://www.google.fr";
+
         }
 
 

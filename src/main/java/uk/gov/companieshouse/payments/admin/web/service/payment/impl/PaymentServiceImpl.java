@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.payments.admin.web.service.payment.impl;
 
+import org.codehaus.groovy.tools.shell.IO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,9 @@ import uk.gov.companieshouse.payments.admin.web.api.ApiClientService;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
+import java.io.File;
+import java.io.IOException;
+
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
@@ -23,18 +27,19 @@ public class PaymentServiceImpl implements PaymentService {
     private ApiClientService apiClientService;
 
     @Override
-    public void createBulkRefund(MultipartFile file)
-        throws ServiceException {
-
-        PaymentApi paymentApi = new PaymentApi();
-
+    public void createBulkRefund(MultipartFile multipartFile)
+            throws ServiceException, IOException {
 
         InternalApiClient internalApiClient = apiClientService.getPrivateApiClient();
         ApiResponse<PaymentApi> apiResponse;
 
+        File file = new File("src/main/resources/targetFile.tmp");
+
+        multipartFile.transferTo(file);
+
         try {
             String uri = CREATE_BULK_REFUND.toString();
-            apiResponse = internalApiClient.privatePayment().bulkRefund(uri, paymentApi).execute();
+            apiResponse = internalApiClient.privatePayment().bulkRefund(uri, file).execute();
         } catch (ApiErrorResponseException ex) {
             throw new ServiceException("Error creating payments api request", ex);
         } catch (URIValidationException ex) {
