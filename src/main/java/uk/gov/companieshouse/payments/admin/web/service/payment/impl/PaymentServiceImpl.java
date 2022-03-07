@@ -1,27 +1,35 @@
 package uk.gov.companieshouse.payments.admin.web.service.payment.impl;
 
-import org.codehaus.groovy.tools.shell.IO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriTemplate;
 import uk.gov.companieshouse.api.InternalApiClient;
-import uk.gov.companieshouse.api.error.ApiErrorResponseException;
-import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.ApiResponse;
 import uk.gov.companieshouse.api.model.payment.PaymentApi;
+import uk.gov.companieshouse.logging.Logger;
+import uk.gov.companieshouse.logging.LoggerFactory;
+import uk.gov.companieshouse.payments.admin.web.Application;
 import uk.gov.companieshouse.payments.admin.web.api.ApiClientService;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
+import uk.gov.companieshouse.payments.admin.web.fileUpload.FileUploadAPIClient;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
-import java.io.File;
 import java.io.IOException;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
+    protected static final Logger LOGGER = LoggerFactory
+            .getLogger(Application.APPLICATION_NAME_SPACE);
+
     private static final UriTemplate CREATE_BULK_REFUND =
             new UriTemplate("/admin/payments/bulk-refunds/govpay");
+
+    private static final String HEADER_API_KEY = "x-api-key";
+
+    @Autowired
+    private FileUploadAPIClient fileUploadAPIClient;
 
     @Autowired
     private ApiClientService apiClientService;
@@ -30,13 +38,14 @@ public class PaymentServiceImpl implements PaymentService {
     public void createBulkRefund(MultipartFile multipartFile)
             throws ServiceException, IOException {
 
+        /*
         InternalApiClient internalApiClient = apiClientService.getPrivateApiClient();
         ApiResponse<PaymentApi> apiResponse;
+         */
 
-        File file = new File("src/main/resources/targetFile.tmp");
+        fileUploadAPIClient.upload(multipartFile);
 
-        multipartFile.transferTo(file);
-
+        /*
         try {
             String uri = CREATE_BULK_REFUND.toString();
             apiResponse = internalApiClient.privatePayment().bulkRefund(uri, file).execute();
@@ -45,5 +54,6 @@ public class PaymentServiceImpl implements PaymentService {
         } catch (URIValidationException ex) {
             throw new ServiceException("Invalid URI for payments api request", ex);
         }
+         */
     }
 }

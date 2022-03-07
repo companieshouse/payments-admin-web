@@ -19,4 +19,6 @@ public interface SessionService {
     Map<String, Object> getUserInfo();
 
     Map<String, Object> getUserPermissions();
+
+    String getUserToken();
 }
