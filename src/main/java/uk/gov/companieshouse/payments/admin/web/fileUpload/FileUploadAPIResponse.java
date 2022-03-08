@@ -1,7 +1,7 @@
 package uk.gov.companieshouse.payments.admin.web.fileUpload;
 
 /**
- * Wrapper class for the info returned from the File Transfer API.
+ * Wrapper class for the info returned from the File Upload API request.
  */
 public class FileUploadAPIResponse {
 

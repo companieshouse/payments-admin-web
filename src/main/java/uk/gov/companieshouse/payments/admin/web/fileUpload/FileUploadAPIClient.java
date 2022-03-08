@@ -29,8 +29,6 @@ public class FileUploadAPIClient {
     @Autowired
     private SessionService sessionService;
 
-
-
     @Value("${payments.api.url}")
     private String paymentsAPIUrl;
 
@@ -48,15 +46,14 @@ public class FileUploadAPIClient {
         return response;
     }
 
-
     /**
-     * Uploads a file to the file-transfer-api
+     * Uploads a file to the Payments API
      * Creates a multipart form request containing the file and sends to
-     * the file-transfer-api. The response from the file-transfer-api contains
-     * the new unique id for the file. This is captured and returned in the FileTransferApiClientResponse.
+     * the Payments API. The response from the Payments API contains
+     * the new unique id for the file. This is captured and returned in the FileUploadApiClientResponse.
      *
      * @param fileToUpload The file to upload
-     * @return FileTransferApiClientResponse containing the file id if successful, and http status
+     * @return FileUploadApiClientResponse containing the file id if successful, and http status
      */
     public FileUploadAPIClientResponse upload(final MultipartFile fileToUpload) {
         restTemplate = new RestTemplate();
@@ -71,25 +68,24 @@ public class FileUploadAPIClient {
                     return restTemplate.postForEntity(paymentsAPIUrl + "/admin/payments/bulk-refunds/govpay", requestEntity, FileUploadAPIResponse.class);
                 },
 
-                // FileTransferResponseBuilder - the output from FileTransferOperation is the
-                // input into this FileTransferResponseBuilder
+                // FileUploadResponseBuilder - the output from FileUploadOperation is the
+                // input into this FileUplaodResponseBuilder
                 // TODO
                 responseEntity -> {
-                    FileUploadAPIClientResponse fileTransferApiClientResponse = new FileUploadAPIClientResponse();
+                    FileUploadAPIClientResponse fileUploadApiClientResponse = new FileUploadAPIClientResponse();
                     if (responseEntity != null) {
-                        fileTransferApiClientResponse.setHttpStatus(responseEntity.getStatusCode());
+                        fileUploadApiClientResponse.setHttpStatus(responseEntity.getStatusCode());
                         FileUploadAPIResponse apiResponse = responseEntity.getBody();
                         if (apiResponse != null) {
-                            fileTransferApiClientResponse.setFileId(apiResponse.getId());
+                            fileUploadApiClientResponse.setFileId(apiResponse.getId());
                         } else {
-                            fileTransferApiClientResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                            fileUploadApiClientResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
                         }
                     } else {
-                        fileTransferApiClientResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                        fileUploadApiClientResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
                     }
-                    return fileTransferApiClientResponse;
+                    return fileUploadApiClientResponse;
                 }
-
         );
     }
 
@@ -112,7 +108,6 @@ public class FileUploadAPIClient {
         fileHeaderMap.add(HttpHeaders.CONTENT_DISPOSITION, String.format(CONTENT_DISPOSITION_VALUE, FILE, fileToUpload.getOriginalFilename()));
         return fileHeaderMap;
     }
-
 
     private LinkedMultiValueMap<String, Object> createUploadBody(final HttpEntity<byte[]> fileHttpEntity) {
         LinkedMultiValueMap<String, Object> multipartReqMap = new LinkedMultiValueMap<>();

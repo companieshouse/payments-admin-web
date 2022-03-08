@@ -3,7 +3,7 @@ package uk.gov.companieshouse.payments.admin.web.fileUpload;
 import org.springframework.http.HttpStatus;
 
 /**
- * Class representing the file transfer API client response.
+ * Class representing the file upload API client response.
  */
 public class FileUploadAPIClientResponse {
 
