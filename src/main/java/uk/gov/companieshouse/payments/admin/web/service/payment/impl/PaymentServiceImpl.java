@@ -4,13 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriTemplate;
-import uk.gov.companieshouse.api.InternalApiClient;
-import uk.gov.companieshouse.api.model.ApiResponse;
-import uk.gov.companieshouse.api.model.payment.PaymentApi;
 import uk.gov.companieshouse.logging.Logger;
 import uk.gov.companieshouse.logging.LoggerFactory;
 import uk.gov.companieshouse.payments.admin.web.Application;
-import uk.gov.companieshouse.payments.admin.web.api.ApiClientService;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.fileUpload.FileUploadAPIClient;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
@@ -31,17 +27,9 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private FileUploadAPIClient fileUploadAPIClient;
 
-    @Autowired
-    private ApiClientService apiClientService;
-
     @Override
     public void createBulkRefund(MultipartFile multipartFile)
             throws ServiceException, IOException {
-
-        /*
-        InternalApiClient internalApiClient = apiClientService.getPrivateApiClient();
-        ApiResponse<PaymentApi> apiResponse;
-         */
 
         fileUploadAPIClient.upload(multipartFile);
 
