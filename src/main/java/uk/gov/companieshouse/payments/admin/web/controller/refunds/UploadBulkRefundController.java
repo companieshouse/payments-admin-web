@@ -47,19 +47,7 @@ public class UploadBulkRefundController extends BaseController {
         if (bindingResult.hasErrors()) {
             return getTemplateName();
         }
-
-        try {
-            paymentService.createBulkRefund(uploadRefundFile.getrefundFile());
-        } catch (ServiceException e){
-            LOGGER.errorRequest(request, e.getMessage(), e);
-            return "redirect:https://www.google.co.uk";
-        } catch (IOException e) {
-            LOGGER.errorRequest(request, e.getMessage(), e);
-            return "redirect:https://www.google.fr";
-
-        }
-
-
+         paymentService.createBulkRefund(uploadRefundFile.getrefundFile());
 
 
         //TODO - Change to summary page when implemented
