@@ -28,8 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
     private FileUploadAPIClient fileUploadAPIClient;
 
     @Override
-    public void createBulkRefund(MultipartFile multipartFile)
-            throws ServiceException, IOException {
+    public void createBulkRefund(MultipartFile multipartFile) {
 
         fileUploadAPIClient.upload(multipartFile);
 

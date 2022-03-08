@@ -7,6 +7,5 @@ import java.io.IOException;
 
 public interface PaymentService {
 
-    void createBulkRefund (MultipartFile file)
-            throws ServiceException, IOException;
+    void createBulkRefund (MultipartFile file);
 }
