@@ -8,12 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.companieshouse.payments.admin.web.session.SessionService;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Component
 public class FileUploadAPIClient {
@@ -23,8 +23,6 @@ public class FileUploadAPIClient {
     private static final String FILE = "file";
 
     private static final String AUTHORIZATION = "authorization";
-
-    private RestTemplate restTemplate;
 
     @Autowired
     private SessionService sessionService;
@@ -55,8 +53,8 @@ public class FileUploadAPIClient {
      * @param fileToUpload The file to upload
      * @return FileUploadApiClientResponse containing the file id if successful, and http status
      */
-    public FileUploadAPIClientResponse upload(final MultipartFile fileToUpload) {
-        restTemplate = new RestTemplate();
+    public FileUploadAPIClientResponse upload(final MultipartFile fileToUpload) throws HttpClientErrorException {
+        RestTemplate restTemplate = new RestTemplate();
         return makeApiCall(
                 // FileUploadOperation
                 () -> {
@@ -69,8 +67,8 @@ public class FileUploadAPIClient {
                 },
 
                 // FileUploadResponseBuilder - the output from FileUploadOperation is the
-                // input into this FileUplaodResponseBuilder
-                // TODO
+                // input into this FileUploadResponseBuilder
+                // TODO handle unsuccessful API responses
                 responseEntity -> {
                     FileUploadAPIClientResponse fileUploadApiClientResponse = new FileUploadAPIClientResponse();
                     if (responseEntity != null) {
@@ -100,7 +98,6 @@ public class FileUploadAPIClient {
         String userToken = sessionService.getUserToken();
         headers.add(AUTHORIZATION, "Bearer " + userToken);
         return headers;
-
     }
 
     private LinkedMultiValueMap<String, String> createUploadFileHeader(final MultipartFile fileToUpload) {
