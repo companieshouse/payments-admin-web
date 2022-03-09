@@ -24,6 +24,8 @@ public class FileUploadAPIClient {
 
     private static final String AUTHORIZATION = "authorization";
 
+    RestTemplate restTemplate = new RestTemplate();
+
     @Autowired
     private SessionService sessionService;
 
@@ -54,7 +56,6 @@ public class FileUploadAPIClient {
      * @return FileUploadApiClientResponse containing the file id if successful, and http status
      */
     public FileUploadAPIClientResponse upload(final MultipartFile fileToUpload) throws HttpClientErrorException {
-        RestTemplate restTemplate = new RestTemplate();
         return makeApiCall(
                 // FileUploadOperation
                 () -> {
