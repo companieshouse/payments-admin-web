@@ -10,6 +10,7 @@ import java.util.Map;
 public class SessionServiceImpl implements SessionService {
     private static final String SIGN_IN_KEY = "signin_info";
     private static final String USER_PROFILE_KEY = "user_profile";
+    private static final String ACCESS_TOKEN = "access_token";
 
     /**
      * {@inheritDoc}
@@ -34,5 +35,15 @@ public class SessionServiceImpl implements SessionService {
         Map<String, Object> userInfo = getUserInfo();
 
         return userInfo != null ? (Map<String, Object>) userInfo.get("permissions") : null;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public String getUserToken() {
+        Map<String, Object> signInInfo = getUserInfo();
+        Map<String,Object> accessToken = (Map<String, Object>) signInInfo.get(ACCESS_TOKEN);
+
+
+        return accessToken != null ? accessToken.get(ACCESS_TOKEN).toString() : null;
     }
 }
