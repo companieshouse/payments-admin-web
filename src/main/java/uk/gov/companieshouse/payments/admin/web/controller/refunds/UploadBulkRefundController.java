@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,6 +42,7 @@ public class UploadBulkRefundController extends BaseController {
     public String postUploadBulkRefund(@ModelAttribute("uploadRefundFile")
             @Valid UploadRefundFile uploadRefundFile,
             BindingResult bindingResult,
+            Model model,
             HttpServletRequest request) {
 
         if (bindingResult.hasErrors()) {
@@ -51,12 +53,26 @@ public class UploadBulkRefundController extends BaseController {
             paymentService.createBulkRefund(uploadRefundFile.getrefundFile());
 
         } catch (HttpClientErrorException e) {
-            // TODO handle validation responses
-            LOGGER.info(e.getMessage());
-            LOGGER.info(e.getResponseBodyAsString());
+            switch (e.getStatusCode()) {
+                case BAD_REQUEST:
+                    addValidation(model, "validationFailed");
+                    break;
+                case UNPROCESSABLE_ENTITY:
+                    addValidation(model, "mandatoryFieldsMissing");
+                    break;
+                default:
+                    // TODO
+            }
+
+            return getTemplateName();
         }
 
         //TODO - Change to summary page when implemented
         return "redirect:https://find-and-update.company-information.service.gov.uk/";
+    }
+
+    private void addValidation(Model model, String validationType) {
+        model.addAttribute("hasErrors", "1");
+        model.addAttribute(validationType, "1");
     }
 }

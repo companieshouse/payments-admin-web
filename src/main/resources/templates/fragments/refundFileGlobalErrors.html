@@ -5,16 +5,25 @@
     <title></title>
 </head>
 <body>
-<div th:fragment="globalErrors" th:if="${#fields.hasErrors('*')}">
-    <div class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
-        <h2 class="govuk-error-summary__title" id="error-summary-heading">There is a problem</h2>
-        <p id="error-summary-subheading">We were unable to upload the file. Before you try uploading the file again, check that:</p>
-        <ul class="govuk-list govuk-list--bullet">
-            <li>it is in XML format</li>
-            <li>it is 512kb or smaller</li>
-            <li>there are no data fields missing</li>
-        </ul>
+    <div th:fragment="globalErrors" th:if="${#fields.hasErrors('*')} or ${hasErrors}">
+        <div th:if="${#fields.hasErrors('*')} "class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
+            <h2 class="govuk-error-summary__title" id="error-summary-heading">There is a problem</h2>
+            <p id="error-summary-subheading">We were unable to upload the file. Before you try uploading the file again, check that:</p>
+            <ul class="govuk-list govuk-list--bullet">
+                <li>it is in XML format</li>
+                <li>it is 512kb or smaller</li>
+                <li>there are no data fields missing</li>
+            </ul>
+        </div>
+        <div th:if="${validationFailed}" class="govuk-error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" data-module="govuk-error-summary">
+            <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+            <div class="govuk-error-summary__body">
+                <ul class="govuk-list govuk-error-summary__list">
+                    <li>Some of the payments in this file are not eligible for a refund.</li>
+                    <li>You'll need to raise a ServiceNow ticket or contact the support team for help. </li>
+                </ul>
+            </div>
+        </div>
     </div>
-</div>
 </body>
 </html>
