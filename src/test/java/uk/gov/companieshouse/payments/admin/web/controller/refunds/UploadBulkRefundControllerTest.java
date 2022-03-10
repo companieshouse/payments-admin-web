@@ -6,10 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
+import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +30,12 @@ public class UploadBulkRefundControllerTest {
 
     private MockMvc mockMvc;
 
+    @Mock
+    private NavigatorService navigatorService;
+
+    @Mock
+    private PaymentService paymentService;
+
     @InjectMocks
     private UploadBulkRefundController controller;
 
@@ -37,6 +46,7 @@ public class UploadBulkRefundControllerTest {
     private static final String UPLOAD_REFUND_FILE_MODEL = "uploadRefundFile";
 
     private static final String TEMPLATE_NAME_MODEL_ATTR = "templateName";
+
 
     @BeforeEach
     private void setup() {
@@ -97,15 +107,15 @@ public class UploadBulkRefundControllerTest {
                 .andExpect(model().attributeErrorCount(UPLOAD_REFUND_FILE_MODEL, 1));
     }
 
-//    @Test
-//    @DisplayName("Post Upload Bulk Refund - Success")
-//    void postRequestSuccess() throws Exception {
-//
-//        Path path = Paths.get("src/test/java/uk/gov/companieshouse/payments/admin/web/controller/refunds/mockFiles/validRefundFile.xml");
-//        MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
-//                "xml", Files.readAllBytes(path));
-//
-//        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
-//                .andExpect(status().is3xxRedirection());
-//    }
+    @Test
+    @DisplayName("Post Upload Bulk Refund - Success")
+    void postRequestSuccess() throws Exception {
+
+        Path path = Paths.get("src/test/java/uk/gov/companieshouse/payments/admin/web/controller/refunds/mockFiles/validRefundFile.xml");
+        MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
+                "xml", Files.readAllBytes(path));
+
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+                .andExpect(status().is3xxRedirection());
+    }
 }
