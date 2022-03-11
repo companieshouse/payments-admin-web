@@ -8,9 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
@@ -18,10 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -117,5 +119,39 @@ public class UploadBulkRefundControllerTest {
 
         this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
                 .andExpect(status().is3xxRedirection());
+    }
+
+    @Test
+    @DisplayName("Post Upload Bulk Refund - Bad request")
+    void postRequestBadRequest() throws Exception {
+
+        Path path = Paths.get("src/test/java/uk/gov/companieshouse/payments/admin/web/controller/refunds/mockFiles/validRefundFile.xml");
+        MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
+                "xml", Files.readAllBytes(path));
+
+
+        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(paymentService).createBulkRefund(mockValidRefundFile);
+
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("hasErrors"))
+                .andExpect(model().attributeExists("validationFailed"));
+    }
+
+    @Test
+    @DisplayName("Post Upload Bulk Refund - Unprocessable entity")
+    void postRequestUnprocessableEntity() throws Exception {
+
+        Path path = Paths.get("src/test/java/uk/gov/companieshouse/payments/admin/web/controller/refunds/mockFiles/validRefundFile.xml");
+        MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
+                "xml", Files.readAllBytes(path));
+
+
+        doThrow(new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY)).when(paymentService).createBulkRefund(mockValidRefundFile);
+
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("hasErrors"))
+                .andExpect(model().attributeExists("mandatoryFieldsMissing"));
     }
 }
