@@ -40,9 +40,9 @@ public class SessionServiceImpl implements SessionService {
     @SuppressWarnings("unchecked")
     @Override
     public String getUserToken() {
-        Map<String, Object> signInInfo = getUserInfo();
+        Map<String, Object> sessionData = getSessionDataFromContext();
+        Map<String, Object> signInInfo = (Map<String, Object>) sessionData.get(SIGN_IN_KEY);
         Map<String,Object> accessToken = (Map<String, Object>) signInInfo.get(ACCESS_TOKEN);
-
 
         return accessToken != null ? accessToken.get(ACCESS_TOKEN).toString() : null;
     }
