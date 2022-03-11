@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 public class FileUploadAPIClient {
 
-    private static final String CONTENT_DISPOSITION_VALUE = "form-data; name=%s; filename=%s";
+    private static final String CONTENT_DISPOSITION_VALUE = "form-data; name=%s; filename=\"%s\"";
 
     private static final String FILE = "file";
 
