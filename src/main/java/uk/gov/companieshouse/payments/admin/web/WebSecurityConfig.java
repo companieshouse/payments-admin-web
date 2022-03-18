@@ -19,13 +19,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
     }
 
-    // NOTE: These configurations should not be modified without thorough testing of all scenarios.
     @Configuration
     @Order(1)
+    public static class HealthcheckSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/admin/payments/healthcheck");
+        }
+    }
+
+    @Configuration
+    @Order(2)
     public static class APIKeyPaymentsAdminWebSecurityFilterConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/admin/payments/refunds")
+            http.antMatcher("/admin/payments/**")
                     .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
                     .addFilterBefore(new HijackFilter(), BasicAuthenticationFilter.class)
                     .addFilterBefore(new UserAuthFilter(), BasicAuthenticationFilter.class);
