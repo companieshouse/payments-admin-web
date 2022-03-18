@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
+import uk.gov.companieshouse.payments.admin.web.annotation.NextController;
 import uk.gov.companieshouse.payments.admin.web.controller.BaseController;
 import uk.gov.companieshouse.payments.admin.web.models.UploadRefundFile;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
+@NextController(RefundsSummaryController.class)
 @RequestMapping("/admin/payments/refunds")
 public class UploadBulkRefundController extends BaseController {
 
@@ -66,8 +68,7 @@ public class UploadBulkRefundController extends BaseController {
             return getTemplateName();
         }
 
-        //TODO - Change to summary page when implemented
-        return "redirect:https://find-and-update.company-information.service.gov.uk/";
+        return navigatorService.getNextControllerRedirect(this.getClass());
     }
 
     private void addValidation(Model model, String validationType) {
