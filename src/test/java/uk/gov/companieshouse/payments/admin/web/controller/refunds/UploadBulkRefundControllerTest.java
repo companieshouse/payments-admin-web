@@ -118,7 +118,7 @@ public class UploadBulkRefundControllerTest {
                 "xml", Files.readAllBytes(path));
 
         this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
