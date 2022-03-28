@@ -9,7 +9,6 @@ import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
 import uk.gov.companieshouse.api.model.ApiResponse;
-import uk.gov.companieshouse.api.model.payment.PaymentApi;
 import uk.gov.companieshouse.payments.admin.web.api.ApiClientService;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.fileUpload.FileUploadAPIClient;
@@ -36,7 +35,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void processPendingRefunds() throws ServiceException {
         InternalApiClient internalApiClient = apiClientService.getInternalApiClient();
-        ApiResponse<PaymentApi> apiResponse;
+        ApiResponse<Void> apiResponse;
 
             try {
                 String uri = PROCESS_PENDING_URI.toString();

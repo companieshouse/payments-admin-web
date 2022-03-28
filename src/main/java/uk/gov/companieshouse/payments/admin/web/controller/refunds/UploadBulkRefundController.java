@@ -73,8 +73,6 @@ public class UploadBulkRefundController extends BaseController {
         try {
             paymentService.processPendingRefunds();
         } catch (ServiceException e) {
-            System.out.println("\n EXCEPTION HERE ********");
-
             LOGGER.errorRequest(request, e.getMessage(), e);
             return ERROR_VIEW;
         }
