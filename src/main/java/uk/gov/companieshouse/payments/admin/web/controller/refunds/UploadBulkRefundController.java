@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.companieshouse.payments.admin.web.annotation.NextController;
 import uk.gov.companieshouse.payments.admin.web.controller.BaseController;
+import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.models.UploadRefundFile;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
@@ -68,6 +69,15 @@ public class UploadBulkRefundController extends BaseController {
             return getTemplateName();
         }
 
+        // Post to process pending refunds based on the uploaded file.
+        try {
+            paymentService.processPendingRefunds();
+        } catch (ServiceException e) {
+            System.out.println("\n EXCEPTION HERE ********");
+
+            LOGGER.errorRequest(request, e.getMessage(), e);
+            return ERROR_VIEW;
+        }
         return navigatorService.getNextControllerRedirect(this.getClass());
     }
 
