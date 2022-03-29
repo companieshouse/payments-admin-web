@@ -71,7 +71,7 @@ public class UploadBulkRefundController extends BaseController {
 
         // Post to process pending refunds based on the uploaded file.
         try {
-            paymentService.processPendingRefunds();
+            paymentService.postProcessPendingRefunds();
         } catch (ServiceException e) {
             LOGGER.errorRequest(request, e.getMessage(), e);
             return ERROR_VIEW;
