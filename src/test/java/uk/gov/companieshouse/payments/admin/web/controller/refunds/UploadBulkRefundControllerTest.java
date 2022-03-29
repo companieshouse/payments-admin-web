@@ -14,8 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
-import uk.gov.companieshouse.api.InternalApiClient;
-import uk.gov.companieshouse.api.model.payment.PaymentApi;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
@@ -42,12 +40,6 @@ public class UploadBulkRefundControllerTest {
     @Mock
     private NavigatorService navigatorService;
 
-    @Mock
-    private InternalApiClient apiClient;
-
-    @Mock
-    private PaymentApi payment;
-
     @InjectMocks
     private UploadBulkRefundController controller;
 
@@ -58,8 +50,6 @@ public class UploadBulkRefundControllerTest {
     private static final String UPLOAD_REFUND_FILE_MODEL = "uploadRefundFile";
 
     private static final String TEMPLATE_NAME_MODEL_ATTR = "templateName";
-
-    private static final String JOURNEY_NEXT_URL = "/admin/payments/summary";
 
     private static final String ERROR_VIEW = "error";
 
@@ -172,7 +162,7 @@ public class UploadBulkRefundControllerTest {
     }
 
     @Test
-    @DisplayName("Post nah- service exception")
+    @DisplayName("Post to summary page - Service exception")
     void processPendingRefundsServiceException() throws Exception {
         Path path = Paths.get("src/test/java/uk/gov/companieshouse/payments/admin/web/controller/refunds/mockFiles/validRefundFile.xml");
         MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
