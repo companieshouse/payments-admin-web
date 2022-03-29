@@ -9,6 +9,6 @@ public interface PaymentService {
     void createBulkRefund (MultipartFile file)
             throws HttpClientErrorException;
 
-    void processPendingRefunds()
+    void postProcessPendingRefunds()
         throws ServiceException;
 }

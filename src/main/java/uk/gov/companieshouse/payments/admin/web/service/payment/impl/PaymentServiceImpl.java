@@ -8,7 +8,6 @@ import org.springframework.web.util.UriTemplate;
 import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
-import uk.gov.companieshouse.api.model.ApiResponse;
 import uk.gov.companieshouse.payments.admin.web.api.ApiClientService;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.fileUpload.FileUploadAPIClient;
@@ -33,13 +32,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public void processPendingRefunds() throws ServiceException {
+    public void postProcessPendingRefunds() throws ServiceException {
         InternalApiClient internalApiClient = apiClientService.getInternalApiClient();
-        ApiResponse<Void> apiResponse;
 
             try {
                 String uri = PROCESS_PENDING_URI.toString();
-                apiResponse = internalApiClient.privatePayment().processPendingRefunds(uri).execute();
+                internalApiClient.privatePayment().processPendingRefunds(uri).execute();
 
             } catch (ApiErrorResponseException e) {
                 throw new ServiceException("Error posting to process pending refunds", e);
