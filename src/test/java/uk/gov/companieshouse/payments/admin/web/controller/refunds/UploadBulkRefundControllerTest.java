@@ -13,6 +13,10 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import uk.gov.companieshouse.api.InternalApiClient;
+import uk.gov.companieshouse.api.model.payment.PaymentApi;
+import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
@@ -20,11 +24,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -33,10 +37,16 @@ public class UploadBulkRefundControllerTest {
     private MockMvc mockMvc;
 
     @Mock
+    private PaymentService paymentService;
+
+    @Mock
     private NavigatorService navigatorService;
 
     @Mock
-    private PaymentService paymentService;
+    private InternalApiClient apiClient;
+
+    @Mock
+    private PaymentApi payment;
 
     @InjectMocks
     private UploadBulkRefundController controller;
@@ -48,6 +58,12 @@ public class UploadBulkRefundControllerTest {
     private static final String UPLOAD_REFUND_FILE_MODEL = "uploadRefundFile";
 
     private static final String TEMPLATE_NAME_MODEL_ATTR = "templateName";
+
+    private static final String JOURNEY_NEXT_URL = "/admin/payments/summary";
+
+    private static final String ERROR_VIEW = "error";
+
+    private static final String MOCK_CONTROLLER_PATH = UrlBasedViewResolver.REDIRECT_URL_PREFIX + "mockControllerPath";
 
 
     @BeforeEach
@@ -153,5 +169,32 @@ public class UploadBulkRefundControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("hasErrors"))
                 .andExpect(model().attributeExists("mandatoryFieldsMissing"));
+    }
+
+    @Test
+    @DisplayName("Post nah- service exception")
+    void processPendingRefundsServiceException() throws Exception {
+        Path path = Paths.get("src/test/java/uk/gov/companieshouse/payments/admin/web/controller/refunds/mockFiles/validRefundFile.xml");
+        MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
+                "xml", Files.readAllBytes(path));
+
+        doThrow(ServiceException.class).when(paymentService).postProcessPendingRefunds();
+
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+                .andExpect(status().isOk())
+                .andExpect(view().name(ERROR_VIEW));
+    }
+
+    @Test
+    @DisplayName("Post to summary page - successful")
+    void processPendingRefundsSuccessful() throws Exception {
+        Path path = Paths.get("src/test/java/uk/gov/companieshouse/payments/admin/web/controller/refunds/mockFiles/validRefundFile.xml");
+        MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
+                "xml", Files.readAllBytes(path));
+
+        when(navigatorService.getNextControllerRedirect(any(), any())).thenReturn(MOCK_CONTROLLER_PATH);
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name(MOCK_CONTROLLER_PATH));
     }
 }
