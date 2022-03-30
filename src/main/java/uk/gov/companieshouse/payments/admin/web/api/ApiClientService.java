@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.payments.admin.web.api;
 
-import uk.gov.companieshouse.api.ApiClient;
 import uk.gov.companieshouse.api.InternalApiClient;
 
 /**
@@ -10,6 +9,5 @@ import uk.gov.companieshouse.api.InternalApiClient;
  */
 public interface ApiClientService {
 
-    ApiClient getApiClient();
     InternalApiClient getInternalApiClient();
 }
