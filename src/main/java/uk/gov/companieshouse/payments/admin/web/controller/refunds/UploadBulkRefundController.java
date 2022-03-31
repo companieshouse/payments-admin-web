@@ -20,7 +20,7 @@ import javax.validation.Valid;
 
 @Controller
 @NextController(RefundsSummaryController.class)
-@RequestMapping("/admin/payments/refunds")
+@RequestMapping({"/admin/payments/refunds", "/"})
 public class UploadBulkRefundController extends BaseController {
 
     private static final String UPLOAD_BULK_REFUND = "refunds/uploadBulkRefund";
