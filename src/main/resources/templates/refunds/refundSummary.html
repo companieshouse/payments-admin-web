@@ -18,7 +18,7 @@
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-m">Failed refunds</h2>
-        <p class="govuk-body">There 10 failed refunds.</p>
+        <p class="govuk-body" th:text="'There are ' + ${pendingRefunds} + ' failed refunds.'">There are 0 failed refunds</p>
         <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
           Retry refunds
         </button>
