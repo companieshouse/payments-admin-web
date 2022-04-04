@@ -2,4 +2,4 @@ app_name: payments-admin-web
 group: web
 weight: 900
 routes:
-  1: ^/admin/payments/*
+  1: ^/*
