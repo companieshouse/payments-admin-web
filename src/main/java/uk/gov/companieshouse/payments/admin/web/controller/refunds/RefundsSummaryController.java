@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.companieshouse.payments.admin.web.controller.BaseController;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
@@ -38,6 +39,19 @@ public class RefundsSummaryController extends BaseController {
 
         model.addAttribute("pendingRefunds", String.valueOf(pendingRefunds));
 
+        return getTemplateName();
+    }
+
+    @PostMapping
+    public String postRetryRefunds(HttpServletRequest request
+                                   ) {
+        // Post to retry processing pending refunds
+        try {
+            paymentService.postProcessPendingRefunds();
+        } catch (ServiceException e) {
+            LOGGER.errorRequest(request, e.getMessage(), e);
+            return ERROR_VIEW;
+        }
         return getTemplateName();
     }
 }
