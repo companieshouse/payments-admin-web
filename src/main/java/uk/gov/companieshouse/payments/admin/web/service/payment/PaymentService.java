@@ -11,4 +11,7 @@ public interface PaymentService {
 
     void postProcessPendingRefunds()
         throws ServiceException;
+
+    int getPendingRefunds()
+            throws ServiceException;
 }
