@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class RefundsSummaryController extends BaseController {
 
     private static final String REFUND_SUMMARY = "refunds/refundSummary";
+    private static final String RETRY_SUMMARY = "redirect:/admin/payments/summary";
 
     @Autowired
     private PaymentService paymentService;
@@ -52,6 +53,6 @@ public class RefundsSummaryController extends BaseController {
             LOGGER.errorRequest(request, e.getMessage(), e);
             return ERROR_VIEW;
         }
-        return getTemplateName();
+        return RETRY_SUMMARY;
     }
 }
