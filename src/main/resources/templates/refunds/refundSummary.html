@@ -5,24 +5,32 @@
       layout:decorate="~{layouts/baseLayout}">
 
 <head>
-   <title>
-      Payments service refunds
-   </title>
+    <title>
+        Payments service refunds
+    </title>
 </head>
 
-<div id="bulk-refunds-upload"  layout:fragment="content">
+<div id="bulk-refunds-summary" layout:fragment="content">
     <h1 class="govuk-heading-xl">Payment service refunds</h1>
-    <a href="/admin/payments/refunds" role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-8" data-module="govuk-button">
-      Upload refund file
+    <a href="/admin/payments/refunds" role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-8"
+       data-module="govuk-button">
+        Upload refund file
     </a>
     <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h2 class="govuk-heading-m">Failed refunds</h2>
-        <p class="govuk-body" th:text="'There are ' + ${pendingRefunds} + ' failed refunds.'">There are 0 failed refunds</p>
-        <button class="govuk-button govuk-button--secondary" data-module="govuk-button">
-          Retry refunds
-        </button>
-      </div>
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">Failed refunds</h2>
+            <p class="govuk-body" th:text="'There are ' + ${pendingRefunds} + ' failed refunds.'">There are 0 failed
+                refunds</p>
+            <form id="bulkrefundssummary" th:action="@{''}" method="post" class="form">
+                <div class="form-group">
+                    <input id="retry-refunds"
+                           class="govuk-button govuk-button--secondary"
+                           data-module="govuk-button"
+                           data-event-id="Retry refunds"
+                           type="submit" role="button" value="Retry refunds"/>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

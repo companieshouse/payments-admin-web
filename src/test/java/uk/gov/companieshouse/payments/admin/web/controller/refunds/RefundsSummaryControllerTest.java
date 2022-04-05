@@ -14,11 +14,12 @@ import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -75,5 +76,24 @@ public class RefundsSummaryControllerTest {
                 this.mockMvc.perform(get(REFUNDS_SUMMARY_PATH))
                         .andExpect(status().isOk())
                         .andExpect(view().name(ERROR_VIEW));
+        }
+
+        @Test
+        @DisplayName("Post to summary page - Service exception")
+        void retryPendingRefundsServiceException() throws Exception {
+
+                doThrow(ServiceException.class).when(mockPaymentService).postProcessPendingRefunds();
+
+                this.mockMvc.perform(post(REFUNDS_SUMMARY_PATH))
+                        .andExpect(status().isOk())
+                        .andExpect(view().name(ERROR_VIEW));
+        }
+
+        @Test
+        @DisplayName("Post to summary page - successful")
+        void retryPendingRefundsSuccessful() throws Exception {
+                this.mockMvc.perform(post(REFUNDS_SUMMARY_PATH))
+                        .andExpect(status().isOk())
+                        .andExpect(view().name(REFUNDS_SUMMARY_VIEW));
         }
 }
