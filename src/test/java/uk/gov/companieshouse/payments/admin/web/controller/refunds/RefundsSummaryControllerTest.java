@@ -15,8 +15,11 @@ import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -81,7 +84,7 @@ public class RefundsSummaryControllerTest {
 
                 doThrow(ServiceException.class).when(mockPaymentService).postProcessPendingRefunds();
 
-                this.mockMvc.perform(multipart(REFUNDS_SUMMARY_PATH))
+                this.mockMvc.perform(post(REFUNDS_SUMMARY_PATH))
                         .andExpect(status().isOk())
                         .andExpect(view().name(ERROR_VIEW));
         }
