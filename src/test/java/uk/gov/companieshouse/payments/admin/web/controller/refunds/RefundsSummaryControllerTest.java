@@ -17,10 +17,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -94,7 +91,7 @@ public class RefundsSummaryControllerTest {
         @DisplayName("Post to summary page - successful")
         void retryPendingRefundsSuccessful() throws Exception {
                 this.mockMvc.perform(post(REFUNDS_SUMMARY_PATH))
-                        .andExpect(status().is3xxRedirection())
-                        .andExpect(redirectedUrl(REFUNDS_SUMMARY_PATH + "?templateName=refunds%2FrefundSummary"));
+                        .andExpect(status().isOk())
+                        .andExpect(view().name(REFUNDS_SUMMARY_VIEW));
         }
 }
