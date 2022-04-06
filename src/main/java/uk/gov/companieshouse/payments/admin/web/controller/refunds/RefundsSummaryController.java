@@ -43,8 +43,7 @@ public class RefundsSummaryController extends BaseController {
     }
 
     @PostMapping
-    public String postRetryRefunds(HttpServletRequest request
-                                   ) {
+    public String postRetryRefunds(HttpServletRequest request, Model model) {
         // Post to retry processing pending refunds
         try {
             paymentService.postProcessPendingRefunds();
@@ -52,6 +51,7 @@ public class RefundsSummaryController extends BaseController {
             LOGGER.errorRequest(request, e.getMessage(), e);
             return ERROR_VIEW;
         }
-        return getTemplateName();
+        // Post to GET method above, reloads the page and returns number of failed refunds
+        return getUploadBulkRefund(request, model);
     }
 }
