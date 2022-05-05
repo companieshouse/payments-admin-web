@@ -22,6 +22,16 @@
                 </h1>
                 <div class="govuk-grid-column-two-thirds">
                     <div class="govuk-form-group">
+                        <h1 class="govuk-fieldset__heading">Which payment provider are you uploading a refund for?</h1>
+
+                        <div style="display:table;" th:object="${bulkRefundType}">
+                            <input style="display:table-cell;" id="govpay" value="govpay" class="govuk-radios__input show-text" type="radio" th:field="*{selectedBulkRefundType}" />
+                            <label style="display:table-cell;" class="govuk-label govuk-radios__label" for="govpay">GovPay</label>
+
+                            <input style="display:table-cell;" id="paypal" value="paypal" class="govuk-radios__input show-text" type="radio" th:field="*{selectedBulkRefundType}"/>
+                            <label style="display:table-cell;" class="govuk-label govuk-radios__label" for="paypal">PayPal</label>
+                        </div>
+
                         <label class="govuk-label" for="refundFile-ref">
                             Upload a file
                         </label>

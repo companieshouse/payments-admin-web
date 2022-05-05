@@ -30,9 +30,9 @@ public class PaymentServiceImpl implements PaymentService {
             new UriTemplate("/admin/payments/bulk-refunds");
 
     @Override
-    public void createBulkRefund(MultipartFile multipartFile)
+    public void createBulkRefund(MultipartFile multipartFile, String selectedBulkRefundType)
             throws HttpClientErrorException {
-        fileUploadAPIClient.upload(multipartFile);
+        fileUploadAPIClient.upload(multipartFile, selectedBulkRefundType);
     }
 
     @Override

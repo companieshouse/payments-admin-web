@@ -12,6 +12,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.companieshouse.payments.admin.web.annotation.NextController;
 import uk.gov.companieshouse.payments.admin.web.controller.BaseController;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
+import uk.gov.companieshouse.payments.admin.web.models.BulkRefundType;
 import uk.gov.companieshouse.payments.admin.web.models.UploadRefundFile;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
@@ -35,6 +36,7 @@ public class UploadBulkRefundController extends BaseController {
     @GetMapping
     public String getUploadBulkRefund(Model model) {
         model.addAttribute("uploadRefundFile", new UploadRefundFile());
+        model.addAttribute("bulkRefundType", new BulkRefundType());
 
         return getTemplateName();
     }
@@ -42,6 +44,7 @@ public class UploadBulkRefundController extends BaseController {
     @PostMapping
     public String postUploadBulkRefund(@ModelAttribute("uploadRefundFile")
             @Valid UploadRefundFile uploadRefundFile,
+            @ModelAttribute("bulkRefundType") @Valid BulkRefundType bulkRefundType,
             BindingResult bindingResult,
             Model model,
             HttpServletRequest request) {
@@ -51,7 +54,7 @@ public class UploadBulkRefundController extends BaseController {
         }
 
         try {
-            paymentService.createBulkRefund(uploadRefundFile.getrefundFile());
+            paymentService.createBulkRefund(uploadRefundFile.getrefundFile(), bulkRefundType.getSelectedBulkRefundType());
 
         } catch (HttpClientErrorException e) {
             switch (e.getStatusCode()) {

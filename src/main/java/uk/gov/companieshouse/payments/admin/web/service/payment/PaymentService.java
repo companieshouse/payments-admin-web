@@ -6,7 +6,7 @@ import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 
 public interface PaymentService {
 
-    void createBulkRefund (MultipartFile file)
+    void createBulkRefund (MultipartFile file, String selectedBulkRefundType)
             throws HttpClientErrorException;
 
     void postProcessPendingRefunds()
