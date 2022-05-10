@@ -18,19 +18,27 @@
                 <div th:replace="fragments/refundFileGlobalErrors :: globalErrors"></div>
 
                 <h1 id="page-title " class="govuk-heading-l">
-                    <span id="page-title-heading">Upload refund file for GOV.UK Pay</span>
+                    <span id="page-title-heading">Which payment provider are you uploading a refund for?</span>
                 </h1>
                 <div class="govuk-grid-column-two-thirds">
                     <div class="govuk-form-group">
-                        <h1 class="govuk-fieldset__heading">Which payment provider are you uploading a refund for?</h1>
 
-                        <div style="display:table;" th:object="${bulkRefundType}">
-                            <input style="display:table-cell;" id="govpay" value="govpay" class="govuk-radios__input show-text" type="radio" th:field="*{selectedBulkRefundType}" />
-                            <label style="display:table-cell;" class="govuk-label govuk-radios__label" for="govpay">GovPay</label>
-
-                            <input style="display:table-cell;" id="paypal" value="paypal" class="govuk-radios__input show-text" type="radio" th:field="*{selectedBulkRefundType}"/>
-                            <label style="display:table-cell;" class="govuk-label govuk-radios__label" for="paypal">PayPal</label>
+                        <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input show-text" id="govpay" name="govpay" type="radio" value="govpay">
+                                <label class="govuk-label govuk-radios__label" for="govpay">
+                                    GovPay
+                                </label>
+                            </div>
+                            <div class="govuk-radios__item">
+                                <input class="govuk-radios__input show-text" id="paypal" name="paypal" type="radio" value="paypal">
+                                <label class="govuk-label govuk-radios__label" for="paypal">
+                                    PayPal
+                                </label>
+                            </div>
                         </div>
+
+                        <br>
 
                         <label class="govuk-label" for="refundFile-ref">
                             Upload a file
