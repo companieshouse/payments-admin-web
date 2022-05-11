@@ -42,14 +42,15 @@ public class UploadBulkRefundController extends BaseController {
     }
 
     @PostMapping
-    public String postUploadBulkRefund(@ModelAttribute("uploadRefundFile")
-            @Valid UploadRefundFile uploadRefundFile,
+    public String postUploadBulkRefund(
+            @ModelAttribute("uploadRefundFile") @Valid UploadRefundFile uploadRefundFile,
+            BindingResult bindingResultFile,
             @ModelAttribute("bulkRefundType") @Valid BulkRefundType bulkRefundType,
-            BindingResult bindingResult,
+            BindingResult bindingResultType,
             Model model,
             HttpServletRequest request) {
 
-        if (bindingResult.hasErrors()) {
+        if (bindingResultFile.hasErrors()) {
             return getTemplateName();
         }
 
