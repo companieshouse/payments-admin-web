@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
+import uk.gov.companieshouse.payments.admin.web.models.BulkRefundType;
 import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -35,8 +37,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UploadBulkRefundControllerTest {
+    private static final String GOVPAY = "govpay";
 
     private MockMvc mockMvc;
+
+    private BulkRefundType bulkRefundType = new BulkRefundType();
 
     @Mock
     private PaymentService paymentService;
@@ -63,6 +68,7 @@ public class UploadBulkRefundControllerTest {
     @BeforeEach
     private void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+        bulkRefundType.setSelectedBulkRefundType(GOVPAY);
     }
 
     @Test
@@ -111,7 +117,7 @@ public class UploadBulkRefundControllerTest {
         MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "tooBigRefundFile.xml",
                 "xml", Files.readAllBytes(path));
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).flashAttr("bulkRefundType", bulkRefundType))
                 .andExpect(status().isOk())
                 .andExpect(view().name(UPLOAD_BULK_REFUND_VIEW))
                 .andExpect(model().attributeExists(TEMPLATE_NAME_MODEL_ATTR))
@@ -140,9 +146,9 @@ public class UploadBulkRefundControllerTest {
                 "xml", Files.readAllBytes(path));
 
 
-        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(paymentService).createBulkRefund(mockValidRefundFile);
+        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(paymentService).createBulkRefund(mockValidRefundFile, bulkRefundType.getSelectedBulkRefundType());
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).flashAttr("bulkRefundType", bulkRefundType))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("hasErrors"))
                 .andExpect(model().attributeExists("validationFailed"));
@@ -157,9 +163,9 @@ public class UploadBulkRefundControllerTest {
                 "xml", Files.readAllBytes(path));
 
 
-        doThrow(new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY)).when(paymentService).createBulkRefund(mockValidRefundFile);
+        doThrow(new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY)).when(paymentService).createBulkRefund(mockValidRefundFile, bulkRefundType.getSelectedBulkRefundType());
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).flashAttr("bulkRefundType", bulkRefundType))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("hasErrors"))
                 .andExpect(model().attributeExists("mandatoryFieldsMissing"));
