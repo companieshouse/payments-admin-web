@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
-import uk.gov.companieshouse.payments.admin.web.models.BulkRefundType;
 import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
@@ -24,7 +23,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -40,8 +38,6 @@ public class UploadBulkRefundControllerTest {
     private static final String GOVPAY = "govpay";
 
     private MockMvc mockMvc;
-
-    private BulkRefundType bulkRefundType = new BulkRefundType();
 
     @Mock
     private PaymentService paymentService;
@@ -68,7 +64,6 @@ public class UploadBulkRefundControllerTest {
     @BeforeEach
     private void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-        bulkRefundType.setSelectedBulkRefundType(GOVPAY);
     }
 
     @Test
@@ -85,7 +80,7 @@ public class UploadBulkRefundControllerTest {
     @DisplayName("Post Upload Bulk Refund - Failure - No file uploaded")
     void postRequestFailureNoFileUploaded() throws Exception {
 
-        this.mockMvc.perform(post(UPLOAD_BULK_REFUND_PATH))
+        this.mockMvc.perform(post(UPLOAD_BULK_REFUND_PATH).param("paymentProvider", GOVPAY))
                 .andExpect(status().isOk())
                 .andExpect(view().name(UPLOAD_BULK_REFUND_VIEW))
                 .andExpect(model().attributeExists(TEMPLATE_NAME_MODEL_ATTR))
@@ -101,7 +96,7 @@ public class UploadBulkRefundControllerTest {
         MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "nonXmlRefundFile.txt",
                 "xml", Files.readAllBytes(path));
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().isOk())
                 .andExpect(view().name(UPLOAD_BULK_REFUND_VIEW))
                 .andExpect(model().attributeExists(TEMPLATE_NAME_MODEL_ATTR))
@@ -117,7 +112,7 @@ public class UploadBulkRefundControllerTest {
         MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "tooBigRefundFile.xml",
                 "xml", Files.readAllBytes(path));
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).flashAttr("bulkRefundType", bulkRefundType))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().isOk())
                 .andExpect(view().name(UPLOAD_BULK_REFUND_VIEW))
                 .andExpect(model().attributeExists(TEMPLATE_NAME_MODEL_ATTR))
@@ -133,7 +128,7 @@ public class UploadBulkRefundControllerTest {
         MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
                 "xml", Files.readAllBytes(path));
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().is2xxSuccessful());
     }
 
@@ -146,9 +141,9 @@ public class UploadBulkRefundControllerTest {
                 "xml", Files.readAllBytes(path));
 
 
-        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(paymentService).createBulkRefund(mockValidRefundFile, bulkRefundType.getSelectedBulkRefundType());
+        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(paymentService).createBulkRefund(mockValidRefundFile, GOVPAY);
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).flashAttr("bulkRefundType", bulkRefundType))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("hasErrors"))
                 .andExpect(model().attributeExists("validationFailed"));
@@ -163,9 +158,9 @@ public class UploadBulkRefundControllerTest {
                 "xml", Files.readAllBytes(path));
 
 
-        doThrow(new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY)).when(paymentService).createBulkRefund(mockValidRefundFile, bulkRefundType.getSelectedBulkRefundType());
+        doThrow(new HttpClientErrorException(HttpStatus.UNPROCESSABLE_ENTITY)).when(paymentService).createBulkRefund(mockValidRefundFile, GOVPAY);
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).flashAttr("bulkRefundType", bulkRefundType))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("hasErrors"))
                 .andExpect(model().attributeExists("mandatoryFieldsMissing"));
@@ -180,7 +175,7 @@ public class UploadBulkRefundControllerTest {
 
         doThrow(ServiceException.class).when(paymentService).postProcessPendingRefunds();
 
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().isOk())
                 .andExpect(view().name(ERROR_VIEW));
     }
@@ -193,7 +188,7 @@ public class UploadBulkRefundControllerTest {
                 "xml", Files.readAllBytes(path));
 
         when(navigatorService.getNextControllerRedirect(any(), any())).thenReturn(MOCK_CONTROLLER_PATH);
-        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile))
+        this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(MOCK_CONTROLLER_PATH));
     }
