@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.companieshouse.session.handler.SessionHandler;
 import uk.gov.companieshouse.payments.admin.web.session.SessionService;
 
+import java.util.Collections;
 import java.util.Map;
 
 @Component
@@ -34,7 +35,7 @@ public class SessionServiceImpl implements SessionService {
     public Map<String, Object> getUserPermissions() {
         Map<String, Object> userInfo = getUserInfo();
 
-        return userInfo != null ? (Map<String, Object>) userInfo.get("permissions") : null;
+        return userInfo != null ? (Map<String, Object>) userInfo.get("permissions") : Collections.emptyMap();
     }
 
     @SuppressWarnings("unchecked")
