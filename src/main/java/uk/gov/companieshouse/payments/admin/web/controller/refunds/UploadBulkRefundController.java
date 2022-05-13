@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import uk.gov.companieshouse.payments.admin.web.annotation.NextController;
 import uk.gov.companieshouse.payments.admin.web.controller.BaseController;
@@ -40,18 +41,20 @@ public class UploadBulkRefundController extends BaseController {
     }
 
     @PostMapping
-    public String postUploadBulkRefund(@ModelAttribute("uploadRefundFile")
-            @Valid UploadRefundFile uploadRefundFile,
-            BindingResult bindingResult,
+    public String postUploadBulkRefund(
+            @ModelAttribute("uploadRefundFile") @Valid UploadRefundFile uploadRefundFile,
+            BindingResult bindingResultFile,
+            @RequestParam("paymentProvider") @Valid String bulkRefundType,
+            BindingResult bindingResultType,
             Model model,
             HttpServletRequest request) {
 
-        if (bindingResult.hasErrors()) {
+        if (bindingResultFile.hasErrors()) {
             return getTemplateName();
         }
 
         try {
-            paymentService.createBulkRefund(uploadRefundFile.getrefundFile());
+            paymentService.createBulkRefund(uploadRefundFile.getrefundFile(), bulkRefundType);
 
         } catch (HttpClientErrorException e) {
             switch (e.getStatusCode()) {
@@ -62,7 +65,7 @@ public class UploadBulkRefundController extends BaseController {
                     addValidation(model, "mandatoryFieldsMissing");
                     break;
                 default:
-                    // TODO
+                    LOGGER.errorRequest(request, e.getMessage(), e);
             }
 
             return getTemplateName();

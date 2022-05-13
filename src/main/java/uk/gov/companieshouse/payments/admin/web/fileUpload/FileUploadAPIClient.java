@@ -55,7 +55,7 @@ public class FileUploadAPIClient {
      * @param fileToUpload The file to upload
      * @return FileUploadApiClientResponse containing the file id if successful, and http status
      */
-    public FileUploadAPIClientResponse upload(final MultipartFile fileToUpload) throws HttpClientErrorException {
+    public FileUploadAPIClientResponse upload(final MultipartFile fileToUpload, final String selectedBulkRefundType) throws HttpClientErrorException {
         return makeApiCall(
                 // FileUploadOperation
                 () -> {
@@ -64,7 +64,7 @@ public class FileUploadAPIClient {
                     HttpEntity<byte[]> fileHttpEntity = new HttpEntity<>(fileToUpload.getBytes(), fileHeaderMap);
                     LinkedMultiValueMap<String, Object> body = createUploadBody(fileHttpEntity);
                     HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-                    return restTemplate.postForEntity(paymentsAPIUrl + "/admin/payments/bulk-refunds/govpay", requestEntity, FileUploadAPIResponse.class);
+                    return restTemplate.postForEntity(paymentsAPIUrl + "/admin/payments/bulk-refunds/" + selectedBulkRefundType, requestEntity, FileUploadAPIResponse.class);
                 },
 
                 // FileUploadResponseBuilder - the output from FileUploadOperation is the

@@ -38,6 +38,10 @@ class FileUploadAPIClientTest {
 
     private static final String DUMMY_URL = "http://test";
 
+    private static final String GOVPAY = "govpay";
+
+    private static final String PAYPAL = "paypal";
+
     @Captor
     private ArgumentCaptor<ResponseExtractor<ClientHttpResponse>> responseExtractorArgCaptor;
 
@@ -62,14 +66,27 @@ class FileUploadAPIClientTest {
     }
 
     @Test
-    void testUpload_success() {
+    void testUpload_success_govpay() {
         final ResponseEntity<FileUploadAPIResponse> apiResponse = apiSuccessResponse();
 
         when(sessionService.getUserToken()).thenReturn("1234");
         when(restTemplate.postForEntity(eq(DUMMY_URL + "/admin/payments/bulk-refunds/govpay"), any(), eq(FileUploadAPIResponse.class)))
                 .thenReturn(apiResponse);
 
-        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file);
+        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file, GOVPAY);
+
+        assertEquals(HttpStatus.OK, fileUploadAPIClientResponse.getHttpStatus());
+    }
+
+    @Test
+    void testUpload_success_paypal() {
+        final ResponseEntity<FileUploadAPIResponse> apiResponse = apiSuccessResponse();
+
+        when(sessionService.getUserToken()).thenReturn("1234");
+        when(restTemplate.postForEntity(eq(DUMMY_URL + "/admin/payments/bulk-refunds/paypal"), any(), eq(FileUploadAPIResponse.class)))
+                .thenReturn(apiResponse);
+
+        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file, PAYPAL);
 
         assertEquals(HttpStatus.OK, fileUploadAPIClientResponse.getHttpStatus());
     }
@@ -82,7 +99,7 @@ class FileUploadAPIClientTest {
         MultipartFile mockFile = mock(MultipartFile.class);
         when(mockFile.getBytes()).thenThrow(new IOException());
 
-        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(mockFile);
+        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(mockFile, GOVPAY);
 
         assertTrue(fileUploadAPIClientResponse.getHttpStatus().isError());
         assertThat(fileUploadAPIClientResponse.getHttpStatus(), is(HttpStatus.INTERNAL_SERVER_ERROR));
@@ -94,7 +111,7 @@ class FileUploadAPIClientTest {
 
         when(restTemplate.postForEntity(eq(DUMMY_URL + "/admin/payments/bulk-refunds/govpay"), any(), eq(FileUploadAPIResponse.class))).thenReturn(apiErrorResponse);
 
-        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file);
+        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file, GOVPAY);
 
         assertTrue(fileUploadAPIClientResponse.getHttpStatus().isError());
         assertEquals(apiErrorResponse.getStatusCode(), fileUploadAPIClientResponse.getHttpStatus());
@@ -107,7 +124,7 @@ class FileUploadAPIClientTest {
 
         when(restTemplate.postForEntity(eq(DUMMY_URL + "/admin/payments/bulk-refunds/govpay"), any(), eq(FileUploadAPIResponse.class)))
                 .thenReturn(apiResponse);
-        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file);
+        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file, GOVPAY);
 
         assertTrue(fileUploadAPIClientResponse.getHttpStatus().isError());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, fileUploadAPIClientResponse.getHttpStatus());
@@ -119,7 +136,7 @@ class FileUploadAPIClientTest {
 
         when(restTemplate.postForEntity(eq(DUMMY_URL + "/admin/payments/bulk-refunds/govpay"), any(), eq(FileUploadAPIResponse.class))).thenReturn(null);
 
-        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file);
+        FileUploadAPIClientResponse fileUploadAPIClientResponse = fileUploadAPIClient.upload(file, GOVPAY);
 
         assertTrue(fileUploadAPIClientResponse.getHttpStatus().isError());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, fileUploadAPIClientResponse.getHttpStatus());
