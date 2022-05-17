@@ -58,6 +58,9 @@ public class UploadBulkRefundController extends BaseController {
 
         } catch (HttpClientErrorException e) {
             switch (e.getStatusCode()) {
+                case GATEWAY_TIMEOUT:
+                    System.out.println("case Gateway Timeout");
+                    return navigatorService.getNextControllerRedirect(this.getClass());
                 case BAD_REQUEST:
                     addValidation(model, "validationFailed");
                     break;
