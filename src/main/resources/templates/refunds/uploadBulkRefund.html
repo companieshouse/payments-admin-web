@@ -10,18 +10,19 @@
     </title>
 </head>
 
-<div id="bulk-refunds-upload"  layout:fragment="content">
-    <form id="bulkrefundsupload" th:action="@{''}" th:object="${uploadRefundFile}" method="post" class="form" enctype="multipart/form-data">
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-
-                <div th:replace="fragments/refundFileGlobalErrors :: globalErrors"></div>
-
-                <h1 id="page-title " class="govuk-heading-l">
-                    <span id="page-title-heading">Which payment provider are you uploading a refund for?</span>
-                </h1>
+<body>
+    <div id="bulk-refunds-upload"  layout:fragment="content">
+        <form id="bulkrefundsupload" th:action="@{''}" th:object="${uploadRefundFile}" method="post" class="form" enctype="multipart/form-data" onsubmit="bulkUploadButton()">
+            <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
-                    <div class="govuk-form-group">
+
+                    <div th:replace="fragments/refundFileGlobalErrors :: globalErrors"></div>
+
+                    <h1 id="page-title " class="govuk-heading-l">
+                        <span id="page-title-heading">Which payment provider are you uploading a refund for?</span>
+                    </h1>
+                    <div class="govuk-grid-column-two-thirds">
+                        <div class="govuk-form-group">
 
                         <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
                             <div class="govuk-radios__item">
@@ -44,18 +45,20 @@
                             Upload a file
                         </label>
 
-                        <input class="govuk-file-upload"
-                               id="refundFile-ref"
-                               th:field="*{refundFile}"
-                               name="refundFile-ref"
-                               type="file">
-                    </div>
-                    <div class="form-group">
-                        <input id="next-button" class="govuk-button" data-event-id="Submit" type="submit" role="button" value="Submit"/>
+                            <input class="govuk-file-upload"
+                                   id="refundFile-ref"
+                                   th:field="*{refundFile}"
+                                   name="refundFile-ref"
+                                   type="file">
+                        </div>
+
+                        <div class="form-group">
+                            <input id="bulk-upload-button" class="govuk-button" data-event-id="Submit" type="submit" role="button" value="Submit"/>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+</body>
 </html>
