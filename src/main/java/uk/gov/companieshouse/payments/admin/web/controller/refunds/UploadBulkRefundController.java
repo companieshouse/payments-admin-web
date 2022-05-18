@@ -54,34 +54,39 @@ public class UploadBulkRefundController extends BaseController {
         }
 
         try {
-            paymentService.createBulkRefund(uploadRefundFile.getrefundFile(), bulkRefundType);
-
-        } catch (HttpClientErrorException e) {
-            switch (e.getStatusCode()) {
-                case GATEWAY_TIMEOUT:
-                    System.out.println("case Gateway Timeout");
-                    return navigatorService.getNextControllerRedirect(this.getClass());
-                case BAD_REQUEST:
-                    addValidation(model, "validationFailed");
-                    break;
-                case UNPROCESSABLE_ENTITY:
-                    addValidation(model, "mandatoryFieldsMissing");
-                    break;
-                default:
-                    LOGGER.errorRequest(request, e.getMessage(), e);
+            try {
+                System.out.println("createBulkRefund");
+                paymentService.createBulkRefund(uploadRefundFile.getrefundFile(), bulkRefundType);
+            } catch (HttpClientErrorException e) {
+                System.out.println("createBulkRefund caught exception");
+                switch (e.getStatusCode()) {
+                    case BAD_REQUEST:
+                        addValidation(model, "validationFailed");
+                        break;
+                    case UNPROCESSABLE_ENTITY:
+                        addValidation(model, "mandatoryFieldsMissing");
+                        break;
+                    default:
+                        LOGGER.errorRequest(request, e.getMessage(), e);
+                }
             }
-
-            return getTemplateName();
+        } finally {
+            // If an error has been returned from the API don't continue with processing the file
+            if (model.containsAttribute("hasErrors")) {
+                return getTemplateName();
+            }
+            else {
+                try {
+                    System.out.println("postProcessPendingRefunds");
+                    paymentService.postProcessPendingRefunds();
+                } catch (ServiceException e) {
+                    LOGGER.errorRequest(request, e.getMessage(), e);
+                } finally {
+                    System.out.println("getNextControllerRedirect");
+                    return navigatorService.getNextControllerRedirect(this.getClass());
+                }
+            }
         }
-
-        // Post to process pending refunds based on the uploaded file.
-        try {
-            paymentService.postProcessPendingRefunds();
-        } catch (ServiceException e) {
-            LOGGER.errorRequest(request, e.getMessage(), e);
-            return ERROR_VIEW;
-        }
-        return navigatorService.getNextControllerRedirect(this.getClass());
     }
 
     private void addValidation(Model model, String validationType) {
