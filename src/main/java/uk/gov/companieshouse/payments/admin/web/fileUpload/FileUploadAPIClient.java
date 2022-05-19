@@ -69,7 +69,6 @@ public class FileUploadAPIClient {
 
                 // FileUploadResponseBuilder - the output from FileUploadOperation is the
                 // input into this FileUploadResponseBuilder
-                // TODO handle unsuccessful API responses
                 responseEntity -> {
                     FileUploadAPIClientResponse fileUploadApiClientResponse = new FileUploadAPIClientResponse();
                     if (responseEntity != null) {
