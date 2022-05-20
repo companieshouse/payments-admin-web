@@ -12,7 +12,7 @@
 
 <body>
     <div id="bulk-refunds-upload"  layout:fragment="content">
-        <form id="bulkrefundsupload" th:action="@{''}" th:object="${uploadRefundFile}" method="post" class="form" enctype="multipart/form-data" onsubmit="bulkUploadButton()">
+        <form th:action="@{''}" th:object="${uploadRefundFile}" method="post" class="form" enctype="multipart/form-data" onsubmit="bulkUploadChange()">
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-two-thirds">
 
@@ -24,36 +24,36 @@
                     <div class="govuk-grid-column-two-thirds">
                         <div class="govuk-form-group">
 
-                        <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input show-text" id="govpay" name="paymentProvider" type="radio" value="govpay">
-                                <label class="govuk-label govuk-radios__label" for="govpay">
-                                    GOV.UK Pay
-                                </label>
+                            <div class="govuk-radios govuk-radios--inline" data-module="govuk-radios">
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input show-text" id="govpay" name="paymentProvider" type="radio" value="govpay">
+                                    <label class="govuk-label govuk-radios__label" for="govpay">
+                                        GOV.UK Pay
+                                    </label>
+                                </div>
+                                <div class="govuk-radios__item">
+                                    <input class="govuk-radios__input show-text" id="paypal" name="paymentProvider" type="radio" value="paypal">
+                                    <label class="govuk-label govuk-radios__label" for="paypal">
+                                        PayPal
+                                    </label>
+                                </div>
                             </div>
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input show-text" id="paypal" name="paymentProvider" type="radio" value="paypal">
-                                <label class="govuk-label govuk-radios__label" for="paypal">
-                                    PayPal
-                                </label>
-                            </div>
-                        </div>
 
-                        <br>
+                            <br>
 
-                        <label class="govuk-label" for="refundFile-ref">
-                            Upload a file
-                        </label>
+                            <label id="upload-a-file" class="govuk-label" for="refundFile-ref">
+                                Upload a file
+                            </label>
 
                             <input class="govuk-file-upload"
                                    id="refundFile-ref"
                                    th:field="*{refundFile}"
                                    name="refundFile-ref"
                                    type="file">
-                        </div>
 
-                        <div class="form-group">
-                            <input id="bulk-upload-button" class="govuk-button" data-event-id="Submit" type="submit" role="button" value="Submit"/>
+                            <div class="form-group">
+                                <input id="bulk-upload-button" class="govuk-button" data-event-id="Submit" type="submit" role="button" value="Submit"/>
+                            </div>
                         </div>
                     </div>
                 </div>
