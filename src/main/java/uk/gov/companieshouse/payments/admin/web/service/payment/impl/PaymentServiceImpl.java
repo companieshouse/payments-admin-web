@@ -39,15 +39,15 @@ public class PaymentServiceImpl implements PaymentService {
     public void postProcessPendingRefunds() throws ServiceException {
         InternalApiClient internalApiClient = apiClientService.getInternalApiClient();
 
-            try {
-                String uri = PROCESS_PENDING_URI.toString();
-                internalApiClient.privatePayment().processPendingRefunds(uri).execute();
+        try {
+            String uri = PROCESS_PENDING_URI.toString();
+            internalApiClient.privatePayment().processPendingRefunds(uri).execute();
 
-            } catch (ApiErrorResponseException e) {
-                throw new ServiceException("Error posting to process pending refunds", e);
-            } catch (URIValidationException e) {
-                throw new ServiceException("Invalid URI for processing pending refunds", e);
-            }
+        } catch (ApiErrorResponseException e) {
+            throw new ServiceException("Error posting to process pending refunds", e);
+        } catch (URIValidationException e) {
+            throw new ServiceException("Invalid URI for processing pending refunds", e);
+        }
     }
 
     @Override

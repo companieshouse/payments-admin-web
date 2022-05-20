@@ -21,7 +21,7 @@
             <h2 class="govuk-heading-m">Failed refunds</h2>
             <p class="govuk-body" th:text="'There are ' + ${pendingRefunds} + ' failed refunds.'">There are 0 failed
                 refunds</p>
-            <form id="bulkrefundssummary" th:action="@{''}" method="post" class="form">
+            <form id="bulkrefundssummary" th:action="@{''}" method="post" class="form" onsubmit="retryRefundsChange()">
                 <div class="form-group">
                     <input id="retry-refunds"
                            class="govuk-button govuk-button--secondary"
