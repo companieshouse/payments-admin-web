@@ -21,6 +21,7 @@
                 <ul class="govuk-list govuk-error-summary__list">
                     <li>Some of the payments in this file are not eligible for a refund.</li>
                     <li>You'll need to raise a ServiceNow ticket or contact the support team for help. </li>
+                    <p th:each="error: ${errorMessages}" th:text="'--' + ${error}"></p>
                 </ul>
             </div>
         </div>
