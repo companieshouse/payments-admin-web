@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -94,15 +96,19 @@ public class UploadBulkRefundController extends BaseController {
     }
 
     private List<String> formatErrorMessage(String errorMessage){
-        // remove characters required for body message
-        String partialFormat = errorMessage.replace("{\"message\":\"","");
-        partialFormat = partialFormat.replace("}","");
-        partialFormat = partialFormat.replace("\"","");
+        List<String> ValidationErrors;
+        try {
+            String partialFormat = new JSONObject(errorMessage).getString("message");
 
-        // remove intro sentence of message saying there are errors in the file
-        String errorString = partialFormat.substring(partialFormat.indexOf(":") + 1);
+            // remove intro sentence of message saying there are errors in the file
+            String errorString = partialFormat.substring(partialFormat.indexOf(":") + 1);
 
-        List<String> errors = Arrays.asList(errorString.split(","));
-        return errors;
+            ValidationErrors = Arrays.asList(errorString.split(","));
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred when formatting validation error message: ", e);
+            ValidationErrors = new ArrayList<>();
+            ValidationErrors.add("Failed to display validation results");
+        }
+        return ValidationErrors;
     }
 }
