@@ -21,7 +21,7 @@
 		<structured-logging.version>1.9.14</structured-logging.version>
 		<common-web-java.version>1.5.1</common-web-java.version>
 		<web-security-java.version>1.4.2</web-security-java.version>
-		<spring-security-core.version>5.6.1</spring-security-core.version>
+		<spring-security-core.version>5.6.9</spring-security-core.version>
 		<java-session-handler.version>2.2.5</java-session-handler.version>
 		<sdk-manager-java.version>1.5.16</sdk-manager-java.version>
 		<private-api-sdk-java.version>2.0.189</private-api-sdk-java.version>
