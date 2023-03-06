@@ -1,5 +1,6 @@
 package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,9 @@ import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @NextController(RefundsSummaryController.class)
@@ -25,6 +29,8 @@ import javax.validation.Valid;
 public class UploadBulkRefundController extends BaseController {
 
     private static final String UPLOAD_BULK_REFUND = "refunds/uploadBulkRefund";
+    private static final String VALIDATION_FAILED = "validationFailed";
+    private static final String MANDATORY_FIELDS_MISSING = "mandatoryFieldsMissing";
 
     @Autowired
     private PaymentService paymentService;
@@ -59,10 +65,10 @@ public class UploadBulkRefundController extends BaseController {
         } catch (HttpClientErrorException e) {
             switch (e.getStatusCode()) {
                 case BAD_REQUEST:
-                    addValidation(model, "validationFailed");
+                    addValidation(model, VALIDATION_FAILED, e.getResponseBodyAsString());
                     break;
                 case UNPROCESSABLE_ENTITY:
-                    addValidation(model, "mandatoryFieldsMissing");
+                    addValidation(model, MANDATORY_FIELDS_MISSING, null);
                     break;
                 default:
                     LOGGER.errorRequest(request, e.getMessage(), e);
@@ -81,8 +87,28 @@ public class UploadBulkRefundController extends BaseController {
         return navigatorService.getNextControllerRedirect(this.getClass());
     }
 
-    private void addValidation(Model model, String validationType) {
+    private void addValidation(Model model, String validationType, String errorMessage) {
         model.addAttribute("hasErrors", "1");
         model.addAttribute(validationType, "1");
+        if (validationType.equals(VALIDATION_FAILED)) {
+            model.addAttribute("errorMessages", formatErrorMessage(errorMessage));
+        }
+    }
+
+    private List<String> formatErrorMessage(String errorMessage){
+        List<String> ValidationErrors;
+        try {
+            String partialFormat = new JSONObject(errorMessage).getString("message");
+
+            // remove intro sentence of message saying there are errors in the file
+            String errorString = partialFormat.substring(partialFormat.indexOf(":") + 1);
+
+            ValidationErrors = Arrays.asList(errorString.split(","));
+        } catch (Exception e) {
+            LOGGER.error("Exception occurred when formatting validation error message: ", e);
+            ValidationErrors = new ArrayList<>();
+            ValidationErrors.add("Failed to display validation results");
+        }
+        return ValidationErrors;
     }
 }

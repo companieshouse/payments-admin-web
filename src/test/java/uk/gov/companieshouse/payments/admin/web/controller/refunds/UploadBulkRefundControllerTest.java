@@ -18,6 +18,7 @@ import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -31,6 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.hamcrest.Matchers.hasSize;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -140,13 +142,17 @@ public class UploadBulkRefundControllerTest {
         MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
                 "xml", Files.readAllBytes(path));
 
+        HttpClientErrorException badRequest = new HttpClientErrorException(HttpStatus.BAD_REQUEST, "",
+                "{\"message\":\"validation failed: fail 1, fail 2\"}".getBytes(StandardCharsets.UTF_8), StandardCharsets.UTF_8);
 
-        doThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST)).when(paymentService).createBulkRefund(mockValidRefundFile, GOVPAY);
+        doThrow(badRequest).when(paymentService).createBulkRefund(mockValidRefundFile, GOVPAY);
 
         this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("hasErrors"))
-                .andExpect(model().attributeExists("validationFailed"));
+                .andExpect(model().attributeExists("validationFailed"))
+                .andExpect(model().attributeExists("errorMessages"))
+                .andExpect(model().attribute("errorMessages", hasSize(2)));
     }
 
     @Test
