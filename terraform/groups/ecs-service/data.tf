@@ -1,4 +1,3 @@
-
 data "vault_generic_secret" "stack_secrets" {
   path = "applications/${var.aws_profile}/${var.environment}/${local.stack_name}-stack"
 }
@@ -34,7 +33,7 @@ data "aws_iam_role" "ecs_cluster_iam_role" {
 }
 
 data "aws_lb" "service_lb" {
-  name = "${var.environment}-chs-apichgovuk"
+  name = "${var.environment}-chs-payments-web"
 }
 
 data "aws_lb_listener" "service_lb_listener" {

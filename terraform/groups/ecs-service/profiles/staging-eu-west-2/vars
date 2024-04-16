@@ -2,15 +2,10 @@ environment = "staging"
 aws_profile = "staging-eu-west-2"
 
 # service configs
-use_set_environment_files = false
+use_set_environment_files = true
 log_level = "trace"
 
 # Scheduled scaling of tasks
 service_autoscale_enabled  = true
 service_scaledown_schedule = "55 19 * * ? *"
 service_scaleup_schedule   = "5 6 * * ? *"
-
-# Certificate for https access through ALB
-ssl_certificate_id = "arn:aws:acm:eu-west-2:250991044064:certificate/56b76dab-5728-4f83-a16d-e3dd59cd82c8"
-zone_id = "" # no route53 for staging yet so empty zone id - ????
-external_top_level_domain = "-staging.company-information.service.gov.uk"

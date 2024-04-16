@@ -3,14 +3,13 @@ locals {
   stack_name                = "payments-service" # this must match the stack name the service deploys into
   name_prefix               = "${local.stack_name}-${var.environment}"
   global_prefix             = "global-${var.environment}"
-  service_name              = "payments-admin-web-test"
+  service_name              = "payments-admin-web"
   container_port            = "8080"
-  eric_port                 = "10000"
   docker_repo               = "payments-admin-web"
   kms_alias                 = "alias/${var.aws_profile}/environment-services-kms"
   lb_listener_rule_priority = 1
-  lb_listener_paths         = ["/testdeployment"] # Temporarily here to disable issues with the currently deployed service
-  healthcheck_path          = "/testdeployment/admin/payments/healthcheck" # Temporarily here to disable issues with the currently deployed service
+  lb_listener_paths         = ["/payments-admin-web"] 
+  healthcheck_path          = "/payments-admin-web/admin/payments/healthcheck" 
   healthcheck_matcher       = "200"
   vpc_name                  = local.stack_secrets["vpc_name"]
   s3_config_bucket          = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
@@ -67,11 +66,4 @@ locals {
     { "name" : "PORT", "value" : local.container_port },
     { "name" : "LOGLEVEL", "value" : var.log_level }
   ])
-
-  # get eric secrets from global secrets map
-  eric_secrets = [
-    { "name" : "API_KEY", "valueFrom" : local.global_secrets_arn_map.eric_api_key },
-    { "name" : "AES256_KEY", "valueFrom" : local.global_secrets_arn_map.eric_aes256_key }
-  ]
-  eric_environment_filename = "eric.env"
 }

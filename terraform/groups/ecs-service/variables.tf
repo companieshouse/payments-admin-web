@@ -28,31 +28,21 @@ variable "docker_registry" {
 # Service performance and scaling configs
 # ------------------------------------------------------------------------------
 variable "desired_task_count" {
-  type        = number
+  type = number
   description = "The desired ECS task count for this service"
-  default     = 1 # defaulted low for dev environments, override for production
+  default = 1 # defaulted low for dev environments, override for production
 }
 variable "required_cpus" {
-  type        = number
+  type = number
   description = "The required cpu resource for this service. 1024 here is 1 vCPU"
-  default     = 256 # defaulted low for dev environments, override for production
+  default = 256 # defaulted low for dev environments, override for production
 }
 variable "required_memory" {
-  type        = number
+  type = number
   description = "The required memory for this service"
-  default     = 512 # defaulted low for node service in dev environments, override for production
+  default = 512 # defaulted low for node service in dev environments, override for production
 }
 
-variable "eric_cpus" {
-  type        = number
-  description = "The required cpu resource for eric. 1024 here is 1 vCPU"
-  default     = 256
-}
-variable "eric_memory" {
-  type        = number
-  description = "The required memory for eric"
-  default     = 512
-}
 variable "max_task_count" {
   type        = number
   description = "The maximum number of tasks for this service."
@@ -85,7 +75,7 @@ variable "service_scaledown_schedule" {
   # Typically used to stop all tasks in a service to save resource costs overnight.
   # E.g. a value of '55 19 * * ? *' would be Mon-Sun 7:55pm.  An empty string indicates that no schedule should be created.
 
-  default = ""
+  default     = ""
 }
 variable "service_scaleup_schedule" {
   type        = string
@@ -93,37 +83,7 @@ variable "service_scaleup_schedule" {
   # Typically used to start all tasks in a service after it has been shutdown overnight.
   # E.g. a value of '5 6 * * ? *' would be Mon-Sun 6:05am.  An empty string indicates that no schedule should be created.
 
-  default = ""
-}
-
-# ----------------------------------------------------------------------
-# Load Balancer Configs
-# ----------------------------------------------------------------------
-variable "create_security_group" {
-  type        = bool
-  description = "When true, a security group will be created for the ALB."
-  default     = true
-}
-variable "ssl_certificate_id" {
-  type        = string
-  description = "The ARN of the certificate for https access through the ALB."
-}
-
-variable "zone_id" {
-  default     = "" # default of empty string is used as conditional when creating route53 records i.e. if no zone_id provided then no route53
-  type        = string
-  description = "The ID of the hosted zone to contain the Route 53 record."
-}
-
-variable "external_top_level_domain" {
-  type        = string
-  description = "The type levelel of the DNS domain for external access."
-}
-
-variable "admin_lb_internal" {
-  type        = bool
-  description = "Whether the admin ALB should be internal or public facing"
-  default     = true
+  default     = ""
 }
 
 # ----------------------------------------------------------------------
@@ -132,7 +92,13 @@ variable "admin_lb_internal" {
 variable "cloudwatch_alarms_enabled" {
   description = "Whether to create a standard set of cloudwatch alarms for the service.  Requires an SNS topic to have already been created for the stack."
   type        = bool
-  default     = false # Set to 'false' until cluster is upgraded and topic created
+  default     = false
+}
+
+variable "multilb_cloudwatch_alarms_enabled" {
+  description = "Whether to create a standard set of cloudwatch alarms for the service in multilb setup.  Requires an SNS topic to have already been created for the stack."
+  type        = bool
+  default     = true
 }
 
 # ------------------------------------------------------------------------------
@@ -156,10 +122,5 @@ variable "log_level" {
 }
 variable "payments_admin_web_version" {
   type        = string
-  description = "The version of payments-admin-web container to run."
-}
-
-variable "eric_version" {
-  type        = string
-  description = "The version of the eric container to run."
+  description = "The version of the payment_admin_web container to run."
 }
