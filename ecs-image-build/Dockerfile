@@ -13,6 +13,6 @@ RUN yum update -y && \
 COPY payments-admin-web.jar /opt/payments-admin-web/
 COPY start-ecs /usr/local/bin/
 
-RUN chmod 555 /usr/local/bin/start-ecs
+RUN chmod 555 /usr/local/bin/docker_start.sh
 
-CMD ["start-ecs"]
+CMD ["./docker_start.sh"]
