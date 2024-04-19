@@ -11,7 +11,6 @@ RUN yum update -y && \
   yum clean all
 
 COPY payments-admin-web.jar /opt/payments-admin-web/
-COPY start-ecs /usr/local/bin/
 
 RUN chmod 555 /usr/local/bin/docker_start.sh
 
