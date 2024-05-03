@@ -1,17 +1,7 @@
-FROM centos:7
+FROM 416670754337.dkr.ecr.eu-west-2.amazonaws.com/ci-corretto-runtime-21:latest
 
-RUN yum update -y && \
-  yum install -y \
-  epel-release-7 \
-  zip \
-  unzip \
-  java-1.8.0-openjdk \
-  maven \
-  make && \
-  yum clean all
-
-COPY payments-admin-web.jar /opt/payments-admin-web/
-
-RUN chmod 555 /usr/local/bin/docker_start.sh
+WORKDIR /opt
+COPY /app .
+COPY docker_start.sh .
 
 CMD ["./docker_start.sh"]
