@@ -4,4 +4,6 @@
 
 #!/bin/bash
 
-exec java ${JAVA_MEM_ARGS} -jar -Dserver.port="${PORT}" "/opt/payments-admin-web/payments-admin-web.jar"
+PORT=8080
+
+exec java -jar -Dserver.port="${PORT}" payments-admin-web.jar"
