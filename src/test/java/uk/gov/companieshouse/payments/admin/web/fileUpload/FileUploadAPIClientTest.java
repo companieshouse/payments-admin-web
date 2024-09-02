@@ -31,7 +31,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.companieshouse.payments.admin.web.session.SessionService;
 
-import javax.websocket.Session;
+import jakarta.websocket.Session;
 
 @ExtendWith(MockitoExtension.class)
 class FileUploadAPIClientTest {
