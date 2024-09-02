@@ -193,7 +193,7 @@ public class UploadBulkRefundControllerTest {
         MockMultipartFile mockValidRefundFile = new MockMultipartFile("refundFile", "refundFile.xml",
                 "xml", Files.readAllBytes(path));
 
-        when(navigatorService.getNextControllerRedirect(any(), any())).thenReturn(MOCK_CONTROLLER_PATH);
+        when(navigatorService.getNextControllerRedirect(any(Class.class))).thenReturn(MOCK_CONTROLLER_PATH);
         this.mockMvc.perform(multipart(UPLOAD_BULK_REFUND_PATH).file(mockValidRefundFile).param("paymentProvider", GOVPAY))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name(MOCK_CONTROLLER_PATH));
