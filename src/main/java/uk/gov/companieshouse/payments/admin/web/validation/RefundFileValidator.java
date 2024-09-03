@@ -3,8 +3,8 @@ package uk.gov.companieshouse.payments.admin.web.validation;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.companieshouse.payments.admin.web.annotation.RefundFile;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class RefundFileValidator implements ConstraintValidator<RefundFile, MultipartFile> {
 
