@@ -30,17 +30,17 @@
     <script th:src="@{{cdnUrl}/javascripts/app/bulk_upload_loading.js(cdnUrl=${@environment.getProperty('cdn.url')})}" type="text/javascript"></script>
 
     <div class="entire-wrapper">
-        <div th:replace="fragments/header :: header (headerText = 'Payments service refunds')"></div>
+        <div th:replace="~{fragments/header :: header (headerText = 'Payments service refunds')}"></div>
         <div class="govuk-width-container">
-            <div th:replace="fragments/userBar :: userBar"></div>
-            <div th:replace="fragments/backButtonLink :: backButtonLink"></div>
+            <div th:replace="~{fragments/userBar :: userBar}"></div>
+            <div th:replace="~{fragments/backButtonLink :: backButtonLink}"></div>
             <main id="content" role="main" class="govuk-main-wrapper">
                 <div layout:fragment="content"></div>
             </main>
         </div>
         <div class="push"></div>
     </div>
-    <div th:replace="fragments/footer :: footer"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
     <script th:src="@{{cdnUrl}/javascripts/app/js-enable.js(cdnUrl=${@environment.getProperty('cdn.url')})}" type="text/javascript"></script>
     <script th:src="@{{cdnUrl}/javascripts/vendor/selection-buttons.js(cdnUrl=${@environment.getProperty('cdn.url')})}" type="text/javascript"></script>
