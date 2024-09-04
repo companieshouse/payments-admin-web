@@ -25,15 +25,16 @@ test: test-unit
 test-unit: clean
 	mvn test
 
+.PHONY: test-integration
+test-integration:
+	mvn integration-test -Dskip.unit.tests=true
+
 .PHONY: package
 package:
-	@test -s ./$(artifact_name).jar || { echo "ERROR: Service JAR not found"; exit 1; }
 	$(info Packaging version: $(version))
 	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
 	mvn package -DskipTests=true
 	$(eval tmpdir:=$(shell mktemp -d build-XXXXXXXXXX))
-	cp ./start.sh $(tmpdir)
-	cp ./routes.yaml $(tmpdir)
 	cp ./target/$(artifact_name)-$(version).jar $(tmpdir)/$(artifact_name).jar
 	cd $(tmpdir); zip -r ../$(artifact_name)-$(version).zip *
 	rm -rf $(tmpdir)
@@ -49,10 +50,21 @@ sonar:
 sonar-pr-analysis:
 	mvn sonar:sonar -P sonar-pr-analysis
 
-.PHONY: docker-build
-docker-build:
-	docker build -t $(artifact_name):$(version) .
+.PHONY: security-check
+security-check:
+	mvn org.owasp:dependency-check-maven:update-only
+	mvn org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=4 -DassemblyAnalyzerEnabled=false
 
-.PHONY: docker-run
-docker-run:
-	docker run -i -t -p $(exposed_port):$(exposed_port) --env-file=local_env $(artifact_name):$(version)
+.PHONY: build-image
+build-image:
+	@echo "Running build-image"
+	docker build --build-arg JAR_FILE=$(artifact_jar) -t $(artifact_name) .
+	@echo "Finished build-image"
+
+.PHONY: all
+all: clean build build-image
+	@echo "Running all"
+
+.PHONY: run
+run:
+	docker run -it --rm $(artifact_name)
