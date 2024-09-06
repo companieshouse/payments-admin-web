@@ -18,15 +18,13 @@ public class WebSecurity {
     @Bean
     public SecurityFilterChain healthcheckSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        http.securityMatcher("/admin/payments/healthcheck")
-            .csrf(AbstractHttpConfigurer::disable);
+        http.securityMatcher("/admin/payments/healthcheck");
         return http.build();
     }
 
     @Bean
     public SecurityFilterChain apiKeyPaymentsAdminWebSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/admin/payments/refunds", "/admin/payments/summary", "/")
-            .csrf(AbstractHttpConfigurer::disable)
             .addFilterBefore(new SessionHandler(), BasicAuthenticationFilter.class)
             .addFilterBefore(new HijackFilter(), BasicAuthenticationFilter.class)
             .addFilterBefore(new UserAuthFilter(), BasicAuthenticationFilter.class);
