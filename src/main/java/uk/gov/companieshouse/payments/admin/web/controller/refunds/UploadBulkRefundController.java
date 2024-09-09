@@ -2,6 +2,8 @@ package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,8 +19,8 @@ import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.models.UploadRefundFile;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,17 +65,14 @@ public class UploadBulkRefundController extends BaseController {
             paymentService.createBulkRefund(uploadRefundFile.getrefundFile(), bulkRefundType);
 
         } catch (HttpClientErrorException e) {
-            switch (e.getStatusCode()) {
-                case BAD_REQUEST:
-                    addValidation(model, VALIDATION_FAILED, e.getResponseBodyAsString());
-                    break;
-                case UNPROCESSABLE_ENTITY:
-                    addValidation(model, MANDATORY_FIELDS_MISSING, null);
-                    break;
-                default:
-                    LOGGER.errorRequest(request, e.getMessage(), e);
+            HttpStatusCode statusCode = e.getStatusCode();
+            if (statusCode.equals(HttpStatus.BAD_REQUEST)) {
+                addValidation(model, VALIDATION_FAILED, e.getResponseBodyAsString());
+            } else if (statusCode.equals(HttpStatus.UNPROCESSABLE_ENTITY)) {
+                addValidation(model, MANDATORY_FIELDS_MISSING, null);
+            } else {
+                LOGGER.errorRequest(request, e.getMessage(), e);
             }
-
             return getTemplateName();
         }
 

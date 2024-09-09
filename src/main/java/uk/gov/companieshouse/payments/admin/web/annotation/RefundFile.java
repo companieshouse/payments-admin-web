@@ -2,9 +2,9 @@ package uk.gov.companieshouse.payments.admin.web.annotation;
 
 import uk.gov.companieshouse.payments.admin.web.validation.RefundFileValidator;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import javax.validation.ReportAsSingleViolation;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+import jakarta.validation.ReportAsSingleViolation;
 import java.lang.annotation.*;
 
 @Documented

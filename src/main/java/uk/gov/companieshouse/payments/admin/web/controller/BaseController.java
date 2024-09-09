@@ -28,4 +28,10 @@ public abstract class BaseController {
 
         model.addAttribute("backButton", navigatorService.getPreviousControllerPath(this.getClass(), pathVars));
     }
+
+    @ModelAttribute
+    public void addCommonAttributes(Model model) {
+        model.addAttribute("headerText", "Payments service refunds");
+        model.addAttribute("headerURL", "/admin/payments/refunds");
+    }
 }

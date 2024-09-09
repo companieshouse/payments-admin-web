@@ -10,7 +10,7 @@ import uk.gov.companieshouse.payments.admin.web.controller.BaseController;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin/payments/summary")

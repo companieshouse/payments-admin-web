@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
@@ -72,7 +73,12 @@ public class FileUploadAPIClient {
                 responseEntity -> {
                     FileUploadAPIClientResponse fileUploadApiClientResponse = new FileUploadAPIClientResponse();
                     if (responseEntity != null) {
-                        fileUploadApiClientResponse.setHttpStatus(responseEntity.getStatusCode());
+                        HttpStatusCode statusCode = responseEntity.getStatusCode();
+                        if (statusCode instanceof HttpStatus) {
+                            fileUploadApiClientResponse.setHttpStatus((HttpStatus) responseEntity.getStatusCode());
+                        } else {
+                            fileUploadApiClientResponse.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+                        }
                         FileUploadAPIResponse apiResponse = responseEntity.getBody();
                         if (apiResponse != null) {
                             fileUploadApiClientResponse.setFileId(apiResponse.getId());
