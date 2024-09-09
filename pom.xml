@@ -31,7 +31,7 @@
 		<thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
 		<web-security-java.version>3.1.0</web-security-java.version>
         <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
-        <spring-boot.version>3.3.2</spring-boot.version>
+        <spring-boot.version>3.3.3</spring-boot.version>
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
 	</properties>
 
@@ -89,7 +89,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20230227</version>
+			<version>20240303</version>
 		</dependency>
 
 		<!-- Security dependencies -->
