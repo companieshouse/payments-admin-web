@@ -13,3 +13,4 @@ The payments admin service is part of the chs-docker-development environment. It
 | GET    | `/admin/payments/summary`                                             | Show pending refunds if any                                 |
 | POST   | `/admin/payments/summary`                                             | Retry processing pending refunds                            |
 | GET    | `/admin/payments/healthcheck`                                         | Healthcheck                                                 |
+
