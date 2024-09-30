@@ -27,12 +27,13 @@
 		<spring-security-web.version>6.3.3</spring-security-web.version>
 		<spring-security-config.version>6.3.3</spring-security-config.version>
 		<spring-security-test.version>6.3.3</spring-security-test.version>
-		<structured-logging.version>3.0.9</structured-logging.version>
+		<structured-logging.version>3.0.14</structured-logging.version>
 		<thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
 		<web-security-java.version>3.1.0</web-security-java.version>
         <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
         <spring-boot.version>3.3.3</spring-boot.version>
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
+        <jackson-databind.version>2.17.2</jackson-databind.version>
 	</properties>
 
 	<dependencies>
@@ -90,6 +91,11 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20240303</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson-databind.version}</version>
 		</dependency>
 
 		<!-- Security dependencies -->
