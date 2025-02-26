@@ -7,7 +7,7 @@ locals {
   container_port            = "8080"
   docker_repo               = "payments-admin-web"
   kms_alias                 = "alias/${var.aws_profile}/environment-services-kms"
-  lb_listener_rule_priority = 1
+  lb_listener_rule_priority = 2
   lb_listener_paths         = ["/admin/payments/*"] 
   healthcheck_path          = "/admin/payments/healthcheck" 
   healthcheck_matcher       = "200"
