@@ -2,14 +2,7 @@ artifact_name       := payments-admin-web
 version             := "unversioned"
 
 dependency_check_base_suppressions:=common_suppressions_spring_6.xml
-
-# dependency_check_suppressions_repo_branch
-# The branch of the dependency-check-suppressions repository to use
-# as the source of the suppressions file.
-# This should point to "main" branch when being used for release,
-# but can point to a different branch for experimentation/development.
-dependency_check_suppressions_repo_branch:=feature/suppressions-for-company-accounts-api
-
+dependency_check_suppressions_repo_branch:=main
 dependency_check_minimum_cvss := 4
 dependency_check_assembly_analyzer_enabled := false
 dependency_check_suppressions_repo_url:=git@github.com:companieshouse/dependency-check-suppressions.git
@@ -64,10 +57,6 @@ sonar:
 sonar-pr-analysis:
 	mvn sonar:sonar -P sonar-pr-analysis
 
-.PHONY: security-check
-security-check: dependency-check
-
-
 .PHONY: build-image
 build-image:
 	@echo "Running build-image"
@@ -82,7 +71,6 @@ all: clean build build-image
 run:
 	docker run -it --rm $(artifact_name)
 
-
 .PHONY: dependency-check
 dependency-check:
 	@ if [ -d "$(DEPENDENCY_CHECK_SUPPRESSIONS_HOME)" ]; then \
@@ -96,7 +84,7 @@ dependency-check:
 			mkdir -p "./target"; \
 			git clone $(dependency_check_suppressions_repo_url) "$${suppressions_home_target_dir}" && \
 				suppressions_home="$${suppressions_home_target_dir}"; \
-			  if [ -d "$${suppressions_home_target_dir}" ] && [ -n "$(dependency_check_suppressions_repo_branch)" ]; then \
+			if [ -d "$${suppressions_home_target_dir}" ] && [ -n "$(dependency_check_suppressions_repo_branch)" ]; then \
 				cd "$${suppressions_home}"; \
 				git checkout $(dependency_check_suppressions_repo_branch); \
 				cd -; \
@@ -106,9 +94,12 @@ dependency-check:
 	suppressions_path="$${suppressions_home}/suppressions/$(dependency_check_base_suppressions)"; \
 	if [  -f "$${suppressions_path}" ]; then \
 		cp -av "$${suppressions_path}" $(suppressions_file); \
-		mvn org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=$(dependency_check_minimum_cvss) -DassemblyAnalyzerEnabled=$(dependency_check_assembly_analyzer_enabled) -DsuppressionFiles=$(suppressions_file); \
+		mvn org.owasp:dependency-check-maven:check -Dformats="json,html" -DprettyPrint -DfailBuildOnCVSS=$(dependency_check_minimum_cvss) -DassemblyAnalyzerEnabled=$(dependency_check_assembly_analyzer_enabled) -DsuppressionFiles=$(suppressions_file); \
 	else \
 		printf -- "\n ERROR Cannot find suppressions file at '%s'\n" "$${suppressions_path}" >&2; \
 		exit 1; \
 	fi
+
+.PHONY: security-check
+security-check: dependency-check
 

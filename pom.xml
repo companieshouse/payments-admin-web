@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>uk.gov.companieshouse</groupId>
 		<artifactId>companies-house-parent</artifactId>
-		<version>2.1.6</version>
+		<version>2.1.11</version>
 		<relativePath/>
 	</parent>
 
@@ -24,7 +24,7 @@
 		<sdk-manager-java.version>3.0.9</sdk-manager-java.version>
         <spring-boot-maven-plugin.version>3.3.2</spring-boot-maven-plugin.version>
 		<spring-security-core.version>6.3.5</spring-security-core.version>
-		<spring-security-web.version>6.3.3</spring-security-web.version>
+		<spring-security-web.version>6.3.4</spring-security-web.version>
 		<spring-security-config.version>6.3.3</spring-security-config.version>
 		<spring-security-test.version>6.3.3</spring-security-test.version>
 		<structured-logging.version>3.0.14</structured-logging.version>
