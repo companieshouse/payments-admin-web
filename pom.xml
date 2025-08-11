@@ -17,24 +17,45 @@
 
 	<properties>
 		<common-web-java.version>3.0.19</common-web-java.version>
-		<java-session-handler.version>4.1.7</java-session-handler.version>
+		<java-session-handler.version>4.1.9</java-session-handler.version>
 		<java.version>21</java.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
-		<private-api-sdk-java.version>4.0.191</private-api-sdk-java.version>
-		<sdk-manager-java.version>3.0.9</sdk-manager-java.version>
+		<private-api-sdk-java.version>4.0.331</private-api-sdk-java.version>
+		<sdk-manager-java.version>3.0.11</sdk-manager-java.version>
         <spring-boot-maven-plugin.version>3.3.2</spring-boot-maven-plugin.version>
-		<spring-security-core.version>6.4.5</spring-security-core.version>
-		<spring-security-web.version>6.3.4</spring-security-web.version>
-		<spring-security-config.version>6.3.3</spring-security-config.version>
-		<spring-security-test.version>6.3.3</spring-security-test.version>
-		<structured-logging.version>3.0.14</structured-logging.version>
+		<spring-security.version>6.5.2</spring-security.version>
+		<structured-logging.version>3.0.39</structured-logging.version>
 		<thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
 		<web-security-java.version>3.1.5</web-security-java.version>
         <jib-maven-plugin.version>3.4.3</jib-maven-plugin.version>
-        <spring-boot.version>3.4.5</spring-boot.version>
+        <spring-boot.version>3.5.4</spring-boot.version>
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
         <jackson-databind.version>2.17.2</jackson-databind.version>
 	</properties>
+
+	<dependencyManagement>
+
+		<dependencies>
+			<!-- CVE-2025-48924 -->
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.18.0</version>
+			</dependency>
+			<!-- CVE-2025-53864 -->
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.13.1</version>
+			</dependency>
+			<!-- CVE-2025-53864 -->
+			<dependency>
+				<groupId>com.nimbusds</groupId>
+				<artifactId>nimbus-jose-jwt</artifactId>
+				<version>10.3.1</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -102,19 +123,19 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring-security-core.version}</version>
+			<version>${spring-security.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>${spring-security-web.version}</version>
+			<version>${spring-security.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>${spring-security-config.version}</version>
+			<version>${spring-security.version}</version>
 		</dependency>
 
 		<dependency>
