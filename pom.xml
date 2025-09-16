@@ -23,7 +23,7 @@
 		<private-api-sdk-java.version>4.0.331</private-api-sdk-java.version>
 		<sdk-manager-java.version>3.0.11</sdk-manager-java.version>
         <spring-boot-maven-plugin.version>3.3.2</spring-boot-maven-plugin.version>
-		<spring-security.version>6.5.2</spring-security.version>
+		<spring-security.version>6.5.4</spring-security.version>
 		<structured-logging.version>3.0.39</structured-logging.version>
 		<thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
 		<web-security-java.version>3.1.5</web-security-java.version>
