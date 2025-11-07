@@ -29,7 +29,7 @@ The payments admin service is part of the chs-docker-development environment. It
     ->Update refund reference and orderCode with provide_id.
     ->Update the amount value with refund value.
     ->Update batchCode value with _id.
-9. We need to provide data to the Finance team, which they would convert into Refund xml.
+9. We need to provide data to the Finance team, which they would convert into Refund xml or use the updated XML file created above.
 10. The data to be provided are - 
 Date and Time of Submission	- This can be fetched from transactions in https://selfservice.payments.service.gov.uk/my-services.
 Payment Reference Number	- This is the Reference number in https://selfservice.payments.service.gov.uk/my-services.
