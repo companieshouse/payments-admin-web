@@ -29,8 +29,8 @@ The payments admin service is part of the chs-docker-development environment. It
     ->Update refund reference and orderCode with provide_id.
     ->Update the amount value with refund value.
     ->Update batchCode value with _id.
-10. We need to provide data to the Finance team, which they would convert into Refund xml.
-11. The data to be provided are - 
+9. We need to provide data to the Finance team, which they would convert into Refund xml.
+10. The data to be provided are - 
 Date and Time of Submission	- This can be fetched from transactions in https://selfservice.payments.service.gov.uk/my-services.
 Payment Reference Number	- This is the Reference number in https://selfservice.payments.service.gov.uk/my-services.
 Webfiling Submission Number	Amount	- This is the amount paid
@@ -42,7 +42,7 @@ PSP ID	- CHS payment - > Provider Id in https://selfservice.payments.service.gov
           {
             "id": "xxxxxxxxPSP ID",
 Payment Method - Card/Paypal
-12. Validate the refunds are reflected in Mongo in the Payments Collection.
+11. Validate the refunds are reflected in Mongo in the Payments Collection.
 You can also refer to - https://companieshouse.atlassian.net/browse/JU-566
 
 ## PAYPAL:
