@@ -25,8 +25,11 @@ The payments admin service is part of the chs-docker-development environment. It
 5. Any webfiling submission and card payment(recommended Mortgage for testing purpose) will reflect in "Make a Payment to Companies House" - Test Account(Sandbox).
 6. For card payments, the refund process can be initiated here - https://admin-web.cidev.aws.chdev.org/admin/payments/refunds, https://admin-web-staging.company-information.service.gov.uk/admin/payments/refunds.
 7. The refund has to be initiated via admin login only. 
-8. The refund xml to be uploaded in the above mentioned urls, will be provided by Finance Team.
-9. We need to provide data to the Finance team, which they would convert into Refund xml.
+8. The refund xml to be uploaded in the above mentioned urls, will be provided by Finance Team or you can update the existing xml from https://companieshouse.atlassian.net/jira/software/c/projects/CC/boards/598?selectedIssue=CC-2996,
+    ->Update refund reference and orderCode with provide_id.
+    ->Update the amount value with refund value.
+    ->Update batchCode value with _id.
+9. We need to provide data to the Finance team, which they would convert into Refund xml or use the updated XML file created above.
 10. The data to be provided are - 
 Date and Time of Submission	- This can be fetched from transactions in https://selfservice.payments.service.gov.uk/my-services.
 Payment Reference Number	- This is the Reference number in https://selfservice.payments.service.gov.uk/my-services.
