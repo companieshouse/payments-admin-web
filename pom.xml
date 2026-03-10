@@ -9,7 +9,6 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>uk.gov.companieshouse</groupId>
 	<artifactId>payments-admin-web</artifactId>
 	<version>unversioned</version>
 	<name>payments-admin-web</name>
@@ -21,7 +20,9 @@
         <common-web-java.version>4.1.2</common-web-java.version>
 		<java-session-handler.version>4.1.15</java-session-handler.version>
 		<java.version>21</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
 		<private-api-sdk-java.version>4.0.331</private-api-sdk-java.version>
 		<sdk-manager-java.version>3.0.13</sdk-manager-java.version>
         <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
@@ -148,18 +149,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.websocket</groupId>
-            <artifactId>jakarta.websocket-api</artifactId>
-            <version>2.1.0</version>
-            <scope>provided</scope>
-        </dependency>
 
         <dependency>
             <groupId>jakarta.validation</groupId>
@@ -191,37 +180,14 @@
                 </executions>
 			</plugin>
 			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<id>default-prepare-agent</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>default-report</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven-compiler-plugin.version}</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-					<fork>true</fork>
-					<meminitial>128m</meminitial>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<maxmem>512m</maxmem>
-				</configuration>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
 			</plugin>
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
