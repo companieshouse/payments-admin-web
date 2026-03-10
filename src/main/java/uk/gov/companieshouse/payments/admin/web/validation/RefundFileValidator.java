@@ -9,7 +9,9 @@ import jakarta.validation.ConstraintValidatorContext;
 public class RefundFileValidator implements ConstraintValidator<RefundFile, MultipartFile> {
 
     @Override
-    public void initialize(RefundFile refundFile) {}
+    public void initialize(RefundFile refundFile) {
+        // No initialization required for this validator
+    }
 
     @Override
     public boolean isValid(MultipartFile refundFile, ConstraintValidatorContext context) {
@@ -19,7 +21,14 @@ public class RefundFileValidator implements ConstraintValidator<RefundFile, Mult
             return false;
         }
 
-        // Return false if file is not XML and bigger than file size limit (512kb * 1024bytes)
-        return refundFile.getOriginalFilename().split("\\.")[1].equals("xml") && refundFile.getSize() < 512 * 1024;
+        String originalFilename = refundFile.getOriginalFilename();
+        if (originalFilename == null) {
+            return false;
+        }
+        String[] parts = originalFilename.split("\\.");
+        if (parts.length < 2) {
+            return false;
+        }
+        return parts[1].equals("xml") && refundFile.getSize() < 512 * 1024;
     }
 }
