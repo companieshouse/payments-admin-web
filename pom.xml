@@ -22,13 +22,13 @@
 		<java.version>21</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
 		<private-api-sdk-java.version>4.0.331</private-api-sdk-java.version>
 		<sdk-manager-java.version>3.0.13</sdk-manager-java.version>
         <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
 		<structured-logging.version>3.0.46</structured-logging.version>
 		<thymeleaf-layout-dialect.version>3.4.0</thymeleaf-layout-dialect.version>
-		<web-security-java.version>3.1.10</web-security-java.version>
+		<web-security-java.version>3.1.12</web-security-java.version>
         <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
         <log4j.version>2.25.3</log4j.version>
@@ -85,7 +85,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -99,10 +99,6 @@
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 			<version>${thymeleaf-layout-dialect.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>uk.gov.companieshouse</groupId>
@@ -189,6 +185,15 @@
                     </compilerArgs>
                 </configuration>
 			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
