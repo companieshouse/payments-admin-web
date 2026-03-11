@@ -27,6 +27,7 @@
 		<sdk-manager-java.version>3.0.13</sdk-manager-java.version>
         <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
 		<structured-logging.version>3.0.46</structured-logging.version>
+        <environment-reader-library.version>3.0.5</environment-reader-library.version>
 		<thymeleaf-layout-dialect.version>3.4.0</thymeleaf-layout-dialect.version>
 		<web-security-java.version>3.1.12</web-security-java.version>
         <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
@@ -54,7 +55,18 @@
                 <artifactId>java-session-handler</artifactId>
                 <version>${java-session-handler.version}</version>
             </dependency>
+            <dependency>
+                <groupId>uk.gov.companieshouse</groupId>
+                <artifactId>environment-reader-library</artifactId>
+                <version>${environment-reader-library.version}</version>
+            </dependency>
 
+            <!-- CVE-2025-48924 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.20.0</version>
+            </dependency>
             <!-- CVE-2025-68161 -->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
@@ -66,12 +78,17 @@
                 <artifactId>log4j-to-slf4j</artifactId>
                 <version>${log4j.version}</version>
             </dependency>
-			<!-- CVE-2025-48924 -->
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>3.20.0</version>
-			</dependency>
+            <!-- CVE-2026-1225 -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.5.27</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.5.27</version>
+            </dependency>
             <!-- CVE-2026-24400 -->
             <dependency>
                 <groupId>org.assertj</groupId>
@@ -94,6 +111,12 @@
 		<dependency>
 			<groupId>uk.gov.companieshouse</groupId>
 			<artifactId>structured-logging</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>nz.net.ultraq.thymeleaf</groupId>
@@ -190,7 +213,19 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
-                    <argLine>${argLine}</argLine>
+                    <environmentVariables>
+                        <ACCOUNT_URL>http://account.chs.local</ACCOUNT_URL>
+                        <CACHE_POOL_SIZE>10</CACHE_POOL_SIZE>
+                        <CACHE_SERVER>localhost:1234</CACHE_SERVER>
+                        <COOKIE_DOMAIN>.companieshouse.gov.uk</COOKIE_DOMAIN>
+                        <COOKIE_NAME>abc</COOKIE_NAME>
+                        <COOKIE_SECRET>iamasecret</COOKIE_SECRET>
+                        <DEFAULT_SESSION_EXPIRATION>3600</DEFAULT_SESSION_EXPIRATION>
+                        <OAUTH2_REQUEST_KEY>ZW5jcnlwdGlvbi1qYXZhLWxpYnJhcnktdGVzdC1rZXk=</OAUTH2_REQUEST_KEY>
+                        <OAUTH2_AUTH_URI>http://account.chs.local/oauth2/authorise</OAUTH2_AUTH_URI>
+                        <OAUTH2_CLIENT_ID>1234567890.apps.ch.gov.uk</OAUTH2_CLIENT_ID>
+                        <OAUTH2_REDIRECT_URI>http://chs.local/oauth2/user/callback</OAUTH2_REDIRECT_URI>
+                    </environmentVariables>
                 </configuration>
             </plugin>
 
