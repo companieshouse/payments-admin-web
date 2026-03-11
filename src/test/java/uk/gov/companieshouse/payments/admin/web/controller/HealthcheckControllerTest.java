@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class HealthcheckControllerTest {
+class HealthcheckControllerTest {
 
     private MockMvc mockMvc;
 
@@ -25,7 +25,7 @@ public class HealthcheckControllerTest {
     private static final String HEALTHCHECK_PATH = "/admin/payments/healthcheck";
 
     @BeforeEach
-    private void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

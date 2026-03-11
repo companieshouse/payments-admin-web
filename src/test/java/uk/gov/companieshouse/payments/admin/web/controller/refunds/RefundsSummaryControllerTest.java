@@ -3,10 +3,10 @@ package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -22,8 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class RefundsSummaryControllerTest {
+class RefundsSummaryControllerTest {
 
         private MockMvc mockMvc;
 
@@ -40,7 +39,8 @@ public class RefundsSummaryControllerTest {
         private static final String ERROR_VIEW = "error";
 
         @BeforeEach
-        private void setup() {
+        void setup() {
+            Mockito.reset(mockPaymentService); // Ensure mock is reset before each test
             this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
         }
 

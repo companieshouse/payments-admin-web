@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.hasSize;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class UploadBulkRefundControllerTest {
+class UploadBulkRefundControllerTest {
     private static final String GOVPAY = "govpay";
 
     private MockMvc mockMvc;
@@ -64,7 +64,7 @@ public class UploadBulkRefundControllerTest {
 
 
     @BeforeEach
-    private void setup() {
+    void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
     }
 

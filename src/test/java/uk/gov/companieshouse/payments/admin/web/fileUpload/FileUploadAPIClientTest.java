@@ -11,11 +11,9 @@ import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -30,8 +28,6 @@ import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.companieshouse.payments.admin.web.session.SessionService;
-
-import jakarta.websocket.Session;
 
 @ExtendWith(MockitoExtension.class)
 class FileUploadAPIClientTest {
@@ -53,9 +49,6 @@ class FileUploadAPIClientTest {
 
     @InjectMocks
     private FileUploadAPIClient fileUploadAPIClient;
-
-    @Rule
-    public final ExpectedException expectedException = ExpectedException.none();
 
     private MultipartFile file;
 
@@ -94,7 +87,6 @@ class FileUploadAPIClientTest {
 
     @Test
     void testUpload_ApiThrowsIOException() throws IOException {
-        final ResponseEntity<FileUploadAPIResponse> apiErrorResponse = apiErrorResponse();
 
         MultipartFile mockFile = mock(MultipartFile.class);
         when(mockFile.getBytes()).thenThrow(new IOException());

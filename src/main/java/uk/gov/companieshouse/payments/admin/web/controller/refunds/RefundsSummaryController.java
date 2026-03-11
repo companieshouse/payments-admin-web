@@ -1,6 +1,5 @@
 package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,11 @@ public class RefundsSummaryController extends BaseController {
 
     private static final String REFUND_SUMMARY = "refunds/refundSummary";
 
-    @Autowired
-    private PaymentService paymentService;
+    private final PaymentService paymentService;
+
+    public RefundsSummaryController(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
 
     @Override protected String getTemplateName() {
         return REFUND_SUMMARY;
@@ -28,7 +30,7 @@ public class RefundsSummaryController extends BaseController {
     @GetMapping
     public String getUploadBulkRefund(HttpServletRequest request, Model model) {
 
-        int pendingRefunds = 0;
+        int pendingRefunds;
         // Get request to return pending refunds if any
         try {
             pendingRefunds = paymentService.getPendingRefunds();
