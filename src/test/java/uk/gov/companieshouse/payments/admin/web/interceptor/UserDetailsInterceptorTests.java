@@ -18,6 +18,7 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @ExtendWith(MockitoExtension.class)
 class UserDetailsInterceptorTests {
@@ -109,5 +110,33 @@ class UserDetailsInterceptorTests {
 
         verify(modelAndView, never()).addObject(anyString(), any());
     }
-}
 
+    @Test
+    @DisplayName("Should not throw if modelAndView is null")
+    void testNullModelAndView() {
+        assertDoesNotThrow(() -> userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), null));
+    }
+
+    @Test
+    @DisplayName("Should not throw if POST and viewName is null")
+    void testPostWithNullViewName() {
+        when(httpServletRequest.getMethod()).thenReturn("POST");
+        when(modelAndView.getViewName()).thenReturn(null);
+        assertDoesNotThrow(() -> userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView));
+    }
+
+    @Test
+    @DisplayName("Should not throw if POST and viewName is a redirect")
+    void testPostWithRedirectViewName() {
+        when(httpServletRequest.getMethod()).thenReturn("POST");
+        when(modelAndView.getViewName()).thenReturn("redirect:/somewhere");
+        assertDoesNotThrow(() -> userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView));
+    }
+
+    @Test
+    @DisplayName("Should not throw if method is not GET or POST")
+    void testNonGetOrPost() {
+        when(httpServletRequest.getMethod()).thenReturn("PUT");
+        assertDoesNotThrow(() -> userDetailsInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView));
+    }
+}
