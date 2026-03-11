@@ -29,19 +29,28 @@ public class UserDetailsInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) {
 
-        if (modelAndView != null && (request.getMethod().equalsIgnoreCase("GET") ||
-                (request.getMethod().equalsIgnoreCase("POST") &&
-                        modelAndView.getViewName() != null &&
-                        !modelAndView.getViewName().startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)))) {
-            Map<String, Object> sessionData = sessionService.getSessionDataFromContext();
+        if (modelAndView == null) {
+            return;
+        }
 
-            Map<String, Object> signInInfo = (Map<String,Object>) sessionData.get(SIGN_IN_KEY);
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            String viewName = modelAndView.getViewName();
+            if (viewName == null) {
+                return;
+            }
+            if (viewName.startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)) {
+                return;
+            }
+        } else if (!request.getMethod().equalsIgnoreCase("GET")) {
+            return;
+        }
 
-            if (signInInfo != null) {
-                Map<String, Object> userProfile = (Map<String, Object>) signInInfo.get(USER_PROFILE_KEY);
-                if (userProfile != null) {
-                    modelAndView.addObject(USER_EMAIL, userProfile.get(EMAIL_KEY));
-                }
+        Map<String, Object> sessionData = sessionService.getSessionDataFromContext();
+        Map<String, Object> signInInfo = (Map<String,Object>) sessionData.get(SIGN_IN_KEY);
+        if (signInInfo != null) {
+            Map<String, Object> userProfile = (Map<String, Object>) signInInfo.get(USER_PROFILE_KEY);
+            if (userProfile != null) {
+                modelAndView.addObject(USER_EMAIL, userProfile.get(EMAIL_KEY));
             }
         }
     }
