@@ -33,10 +33,19 @@
         <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
         <log4j.version>2.25.3</log4j.version>
+        <opentelemetry-instrumentation.version>2.26.1</opentelemetry-instrumentation.version>
+        <kotlin.version>2.3.20</kotlin.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+            <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-bom</artifactId>
+                <version>${opentelemetry-instrumentation.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -96,6 +105,12 @@
                 <version>3.27.7</version>
                 <scope>test</scope>
             </dependency>
+            <!-- CVE-2020-29582(5.3)-->
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>${kotlin.version}</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -108,6 +123,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>io.opentelemetry.instrumentation</groupId>
+            <artifactId>opentelemetry-spring-boot-starter</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>uk.gov.companieshouse</groupId>
 			<artifactId>structured-logging</artifactId>
