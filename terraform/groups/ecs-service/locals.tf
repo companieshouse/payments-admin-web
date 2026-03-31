@@ -11,6 +11,13 @@ locals {
   lb_listener_paths         = ["/admin/payments/*"] 
   healthcheck_path          = "/admin/payments/healthcheck" 
   healthcheck_matcher       = "200"
+
+  # task container healthcheck parameters
+  task_healthcheck_interval = 60
+  task_healthcheck_timeout = 5
+  task_healthcheck_retries = 3
+  task_healthcheck_start_period = 120
+
   vpc_name                  = local.stack_secrets["vpc_name"]
   s3_config_bucket          = data.vault_generic_secret.shared_s3.data["config_bucket_name"]
   app_environment_filename  = "payments-admin-web.env"
