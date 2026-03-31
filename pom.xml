@@ -15,8 +15,8 @@
 	<description>Admin web app for finance to manage payments</description>
 
 	<properties>
-        <spring-boot-dependencies.version>3.5.11</spring-boot-dependencies.version>
-        <spring-boot-maven-plugin.version>3.5.11</spring-boot-maven-plugin.version>
+        <spring-boot-dependencies.version>3.5.13</spring-boot-dependencies.version>
+        <spring-boot-maven-plugin.version>3.5.13</spring-boot-maven-plugin.version>
         <common-web-java.version>4.1.2</common-web-java.version>
 		<java-session-handler.version>4.1.15</java-session-handler.version>
 		<java.version>21</java.version>
