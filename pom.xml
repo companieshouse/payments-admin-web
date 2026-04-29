@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>uk.gov.companieshouse</groupId>
 		<artifactId>companies-house-parent</artifactId>
-		<version>2.1.12</version>
+		<version>2.1.14</version>
 		<relativePath/>
 	</parent>
 
@@ -15,26 +15,27 @@
 	<description>Admin web app for finance to manage payments</description>
 
 	<properties>
-        <spring-boot-dependencies.version>3.5.13</spring-boot-dependencies.version>
-        <spring-boot-maven-plugin.version>3.5.13</spring-boot-maven-plugin.version>
-        <common-web-java.version>4.1.2</common-web-java.version>
-		<java-session-handler.version>4.1.15</java-session-handler.version>
+        <spring-boot-dependencies.version>3.5.14</spring-boot-dependencies.version>
+        <spring-boot-maven-plugin.version>3.5.14</spring-boot-maven-plugin.version>
+        <common-web-java.version>4.1.5</common-web-java.version>
+		<java-session-handler.version>4.1.17</java-session-handler.version>
 		<java.version>21</java.version>
-        <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
 		<private-api-sdk-java.version>4.0.331</private-api-sdk-java.version>
 		<sdk-manager-java.version>3.0.13</sdk-manager-java.version>
-        <spring-boot-maven-plugin.version>3.5.7</spring-boot-maven-plugin.version>
-		<structured-logging.version>3.0.46</structured-logging.version>
+		<structured-logging.version>3.0.45</structured-logging.version>
         <environment-reader-library.version>3.0.5</environment-reader-library.version>
 		<thymeleaf-layout-dialect.version>3.4.0</thymeleaf-layout-dialect.version>
-		<web-security-java.version>3.1.12</web-security-java.version>
+		<web-security-java.version>3.1.15</web-security-java.version>
         <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
-        <log4j.version>2.25.3</log4j.version>
+        <log4j.version>2.25.4</log4j.version>
         <opentelemetry-instrumentation.version>2.26.1</opentelemetry-instrumentation.version>
         <kotlin.version>2.3.20</kotlin.version>
+
+        <!-- Maven Plugins -->
+        <maven.compiler.release>${java.version}</maven.compiler.release>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
 	</properties>
 
 	<dependencyManagement>
@@ -110,6 +111,12 @@
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-stdlib</artifactId>
                 <version>${kotlin.version}</version>
+            </dependency>
+            <!-- CVE-2026-33186 -->
+            <dependency>
+                <groupId>io.grpc</groupId>
+                <artifactId>grpc-context</artifactId>
+                <version>1.80.0</version>
             </dependency>
 		</dependencies>
 	</dependencyManagement>
