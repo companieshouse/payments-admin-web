@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import uk.gov.companieshouse.payments.admin.web.session.SessionService;
 
@@ -53,6 +54,7 @@ public class UserPermissionInterceptorTests {
     void postHandleForUserPermissionFailure() throws Exception {
         Map<String, Object> userPermissions = new HashMap<>();
         when(sessionService.getUserPermissions()).thenReturn(userPermissions);
+        when(modelAndView.getModelMap()).thenReturn(new ModelMap());
 
         userPermissionInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
 
