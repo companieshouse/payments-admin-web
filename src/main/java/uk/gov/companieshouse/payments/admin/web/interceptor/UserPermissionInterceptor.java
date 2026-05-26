@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.payments.admin.web.interceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -14,6 +15,9 @@ import java.util.Map;
 @Component
 public class UserPermissionInterceptor implements HandlerInterceptor{
 
+    @Value("${commonweb.chs-url}")
+    private String chsUrl;
+
     @Autowired
     private SessionService sessionService;
 
@@ -25,6 +29,7 @@ public class UserPermissionInterceptor implements HandlerInterceptor{
         Integer refundPermission = (Integer) userPermissions.get("/admin/payments-bulk-refunds");
 
         if (modelAndView != null && (refundPermission == null || refundPermission != 1)) {
+            modelAndView.getModelMap().addAttribute("chs.url", chsUrl);
             modelAndView.setViewName("refunds/pageNotFound");
         }
     }
