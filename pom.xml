@@ -28,7 +28,7 @@
 		<web-security-java.version>3.1.15</web-security-java.version>
         <jib-maven-plugin.version>3.4.6</jib-maven-plugin.version>
         <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
-        <log4j.version>2.25.4</log4j.version>
+        <log4j.version>2.25.5</log4j.version>
         <opentelemetry-instrumentation.version>2.26.1</opentelemetry-instrumentation.version>
         <kotlin.version>2.3.20</kotlin.version>
         <!-- CVE-2026-34483 -->
