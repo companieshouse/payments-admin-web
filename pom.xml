@@ -15,7 +15,7 @@
 	<description>Admin web app for finance to manage payments</description>
 
 	<properties>
-        <ch-boms.version>0.1.27</ch-boms.version>
+        <ch-boms.version>0.1.28</ch-boms.version>
         <spring-boot-dependencies.version>4.1.1</spring-boot-dependencies.version>
         <common-web-java.version>5.0.0</common-web-java.version>
 		<private-api-sdk-java.version>7.2.33</private-api-sdk-java.version>
