@@ -46,12 +46,6 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- CVE-2026-33186 -->
-            <dependency>
-                <groupId>io.grpc</groupId>
-                <artifactId>grpc-context</artifactId>
-                <version>1.80.0</version>
-            </dependency>
 		</dependencies>
 	</dependencyManagement>
 
