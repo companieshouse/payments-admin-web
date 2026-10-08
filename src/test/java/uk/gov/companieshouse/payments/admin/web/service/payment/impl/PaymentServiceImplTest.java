@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.companieshouse.api.InternalApiClient;
 import uk.gov.companieshouse.api.error.ApiErrorResponseException;
 import uk.gov.companieshouse.api.handler.exception.URIValidationException;
-import uk.gov.companieshouse.api.handler.payment.PrivatePaymentResourceHandler;
-import uk.gov.companieshouse.api.handler.payment.request.PaymentGetPendingRefunds;
+import uk.gov.companieshouse.api.handler.payments.PrivatePaymentResourceHandler;
+import uk.gov.companieshouse.api.handler.payments.request.PaymentGetPendingRefunds;
 import uk.gov.companieshouse.api.model.ApiResponse;
 import uk.gov.companieshouse.api.model.paymentsession.BulkRefundsApi;
 import uk.gov.companieshouse.payments.admin.web.api.ApiClientService;
@@ -119,8 +119,8 @@ class PaymentServiceImplTest {
     @DisplayName("postProcessPendingRefunds - success")
     void postProcessPendingRefunds_success() throws Exception {
         var internalApiClientMock = mock(uk.gov.companieshouse.api.InternalApiClient.class);
-        var handler = mock(uk.gov.companieshouse.api.handler.payment.PrivatePaymentResourceHandler.class);
-        var req = mock(uk.gov.companieshouse.api.handler.payment.request.PaymentProcessPendingRefunds.class);
+        var handler = mock(uk.gov.companieshouse.api.handler.payments.PrivatePaymentResourceHandler.class);
+        var req = mock(uk.gov.companieshouse.api.handler.payments.request.PaymentProcessPendingRefunds.class);
         when(apiClientService.getInternalApiClient()).thenReturn(internalApiClientMock);
         when(internalApiClientMock.privatePayment()).thenReturn(handler);
         when(handler.processPendingRefunds(anyString())).thenReturn(req);
@@ -132,8 +132,8 @@ class PaymentServiceImplTest {
     @DisplayName("postProcessPendingRefunds - ApiErrorResponseException")
     void postProcessPendingRefunds_ApiErrorResponseException() throws Exception {
         var internalApiClientMock = mock(uk.gov.companieshouse.api.InternalApiClient.class);
-        var handler = mock(uk.gov.companieshouse.api.handler.payment.PrivatePaymentResourceHandler.class);
-        var req = mock(uk.gov.companieshouse.api.handler.payment.request.PaymentProcessPendingRefunds.class);
+        var handler = mock(uk.gov.companieshouse.api.handler.payments.PrivatePaymentResourceHandler.class);
+        var req = mock(uk.gov.companieshouse.api.handler.payments.request.PaymentProcessPendingRefunds.class);
         when(apiClientService.getInternalApiClient()).thenReturn(internalApiClientMock);
         when(internalApiClientMock.privatePayment()).thenReturn(handler);
         when(handler.processPendingRefunds(anyString())).thenReturn(req);
@@ -145,8 +145,8 @@ class PaymentServiceImplTest {
     @DisplayName("postProcessPendingRefunds - URIValidationException")
     void postProcessPendingRefunds_URIValidationException() throws Exception {
         var internalApiClientMock = mock(uk.gov.companieshouse.api.InternalApiClient.class);
-        var handler = mock(uk.gov.companieshouse.api.handler.payment.PrivatePaymentResourceHandler.class);
-        var req = mock(uk.gov.companieshouse.api.handler.payment.request.PaymentProcessPendingRefunds.class);
+        var handler = mock(uk.gov.companieshouse.api.handler.payments.PrivatePaymentResourceHandler.class);
+        var req = mock(uk.gov.companieshouse.api.handler.payments.request.PaymentProcessPendingRefunds.class);
         when(apiClientService.getInternalApiClient()).thenReturn(internalApiClientMock);
         when(internalApiClientMock.privatePayment()).thenReturn(handler);
         when(handler.processPendingRefunds(anyString())).thenReturn(req);
