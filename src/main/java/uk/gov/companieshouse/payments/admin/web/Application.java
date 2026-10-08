@@ -13,6 +13,7 @@ import uk.gov.companieshouse.payments.admin.web.interceptor.UserPermissionInterc
 public class Application implements WebMvcConfigurer{
 
 	public static final String APPLICATION_NAME_SPACE = "payments-admin-web";
+	private static final String HEALTHCHECK_PATH = "/admin/payments/healthcheck";
 
 	private UserPermissionInterceptor userPermissionInterceptor;
 	private UserDetailsInterceptor userDetailsInterceptor;
@@ -31,9 +32,9 @@ public class Application implements WebMvcConfigurer{
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(userPermissionInterceptor).excludePathPatterns("/admin/payments/healthcheck");
-		registry.addInterceptor(userDetailsInterceptor).excludePathPatterns("/admin/payments/healthcheck");
-		registry.addInterceptor(loggingInterceptor).excludePathPatterns("/admin/payments/healthcheck");
+		registry.addInterceptor(userPermissionInterceptor).excludePathPatterns(HEALTHCHECK_PATH, "/error");
+		registry.addInterceptor(userDetailsInterceptor).excludePathPatterns(HEALTHCHECK_PATH);
+		registry.addInterceptor(loggingInterceptor).excludePathPatterns(HEALTHCHECK_PATH);
 	}
 
 }

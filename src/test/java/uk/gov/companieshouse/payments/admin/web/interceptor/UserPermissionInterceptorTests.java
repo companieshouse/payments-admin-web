@@ -6,8 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.servlet.ModelAndView;
 import uk.gov.companieshouse.payments.admin.web.session.SessionService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,12 +13,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserPermissionInterceptorTests {
-
-    private static final String PAGE_NOT_FOUND_TEMPLATE = "refunds/pageNotFound";
 
     @Mock
     private HttpServletRequest httpServletRequest;
@@ -29,36 +27,48 @@ public class UserPermissionInterceptorTests {
     private HttpServletResponse httpServletResponse;
 
     @Mock
-    private ModelAndView modelAndView;
-
-    @Mock
     private SessionService sessionService;
 
     @InjectMocks
     private UserPermissionInterceptor userPermissionInterceptor;
 
     @Test
-    @DisplayName("Tests the interceptor for User Permissions success")
-    void postHandleForUserPermissionSuccess() throws Exception {
+    @DisplayName("Allows the request when the user has refund permission")
+    void preHandleForUserPermissionSuccess() throws Exception {
         Map<String, Object> userPermissions = new HashMap<>();
         userPermissions.put("/admin/payments-bulk-refunds", 1);
         when(sessionService.getUserPermissions()).thenReturn(userPermissions);
 
-        userPermissionInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
+        assertTrue(userPermissionInterceptor.preHandle(httpServletRequest, httpServletResponse, new Object()));
 
-        verify(modelAndView, times(0)).setViewName(PAGE_NOT_FOUND_TEMPLATE);
+        verify(httpServletResponse, never()).sendError(anyInt());
     }
 
     @Test
-    @DisplayName("Tests the interceptor for User Permissions failure")
-    void postHandleForUserPermissionFailure() throws Exception {
+    @DisplayName("Blocks the request before the controller runs when permission is missing")
+    void preHandleForUserPermissionFailure() throws Exception {
+        when(sessionService.getUserPermissions()).thenReturn(new HashMap<>());
+
+        assertFalse(userPermissionInterceptor.preHandle(httpServletRequest, httpServletResponse, new Object()));
+
+        verify(httpServletResponse).sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
+
+    @Test
+    @DisplayName("Blocks the request when permission value is not 1")
+    void preHandleForUserPermissionZero() throws Exception {
         Map<String, Object> userPermissions = new HashMap<>();
+        userPermissions.put("/admin/payments-bulk-refunds", 0);
         when(sessionService.getUserPermissions()).thenReturn(userPermissions);
-        when(modelAndView.getModelMap()).thenReturn(new ModelMap());
 
-        userPermissionInterceptor.postHandle(httpServletRequest, httpServletResponse, new Object(), modelAndView);
+        assertFalse(userPermissionInterceptor.preHandle(httpServletRequest, httpServletResponse, new Object()));
+    }
 
-        verify(modelAndView, times(1)).setViewName(PAGE_NOT_FOUND_TEMPLATE);
+    @Test
+    @DisplayName("Blocks the request when user permissions are unavailable")
+    void preHandleForNullPermissions() throws Exception {
+        when(sessionService.getUserPermissions()).thenReturn(null);
+
+        assertFalse(userPermissionInterceptor.preHandle(httpServletRequest, httpServletResponse, new Object()));
     }
 }
-

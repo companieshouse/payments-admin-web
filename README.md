@@ -4,6 +4,25 @@ Web service for use by internal finance users to manage payments
 ## Running the service
 The payments admin service is part of the chs-docker-development environment. It can be found in the platform module.
 
+### Access
+
+Users must be signed in and hold the `/admin/payments-bulk-refunds` permission. The permission is checked before the request reaches a controller; users without it receive a 404 "Page not found" response. The healthcheck endpoint is not restricted.
+
+### Build
+
+Requires Java 21 and Maven.
+
+```bash
+make build
+```
+
+### Test
+
+```bash
+mvn test
+mvn test -Dtest=UserPermissionInterceptorTests   # a single test class
+```
+
 ### Endpoints
 
 | Method | Path                                                                  | Description                                                 |
