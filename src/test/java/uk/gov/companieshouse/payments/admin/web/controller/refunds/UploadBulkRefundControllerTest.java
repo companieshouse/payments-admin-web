@@ -3,11 +3,11 @@ package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.hamcrest.Matchers.hasSize;
 
 @ExtendWith(MockitoExtension.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UploadBulkRefundControllerTest {
     private static final String GOVPAY = "govpay";
 
@@ -46,6 +45,9 @@ class UploadBulkRefundControllerTest {
 
     @Mock
     private NavigatorService navigatorService;
+
+    @Mock
+    private MessageSource messageSource;
 
     @InjectMocks
     private UploadBulkRefundController controller;
