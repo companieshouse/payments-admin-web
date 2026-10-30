@@ -5,21 +5,21 @@
       layout:decorate="~{layouts/baseLayout}">
 
 <head>
-    <title>
+    <title th:text="#{refund.header.service-name}">
         Payments service refunds
     </title>
 </head>
 
 <div id="bulk-refunds-summary" layout:fragment="content">
-    <h1 class="govuk-heading-xl">Payment service refunds</h1>
+    <h1 class="govuk-heading-xl" th:text="#{refund.summary.heading}">Payment service refunds</h1>
     <a href="/admin/payments/refunds" role="button" draggable="false" class="govuk-button govuk-!-margin-bottom-8"
-       data-module="govuk-button">
+       data-module="govuk-button" th:text="#{refund.summary.upload-file}">
         Upload refund file
     </a>
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h2 class="govuk-heading-m">Failed refunds</h2>
-            <p class="govuk-body" th:text="'There are ' + ${pendingRefunds} + ' failed refunds.'">There are 0 failed
+            <h2 class="govuk-heading-m" th:text="#{refund.summary.failed-heading}">Failed refunds</h2>
+            <p class="govuk-body" th:text="#{refund.summary.failed-count(${pendingRefunds})}">There are 0 failed
                 refunds</p>
             <form id="bulkrefundssummary" th:action="@{''}" method="post" class="form" onsubmit="retryRefundsChange()">
                 <div class="form-group">
@@ -27,7 +27,7 @@
                            class="govuk-button govuk-button--secondary"
                            data-module="govuk-button"
                            data-event-id="Retry refunds"
-                           type="submit" role="button" value="Retry refunds"/>
+                           type="submit" role="button" value="Retry refunds" th:value="#{refund.summary.retry}"/>
                 </div>
             </form>
         </div>
