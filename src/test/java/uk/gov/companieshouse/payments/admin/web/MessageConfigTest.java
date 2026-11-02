@@ -2,6 +2,7 @@ package uk.gov.companieshouse.payments.admin.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.mockito.Mockito.*;
 
 import java.util.Locale;
 import java.util.Set;
@@ -13,6 +14,9 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 class MessageConfigTest {
 
@@ -104,5 +108,18 @@ class MessageConfigTest {
     @DisplayName("Language selection uses the lang request parameter")
     void testLocaleChangeInterceptorConfiguration() {
         assertEquals("lang", messageConfig.localeChangeInterceptor().getParamName());
+    }
+
+    @Test
+    @DisplayName("Excludes healthcheck endpoint from locale change interceptor")
+    void testExcludeHealthcheckFromLocaleChangeInterceptor() {
+        InterceptorRegistry registry = mock(InterceptorRegistry.class);
+        InterceptorRegistration registration = mock(InterceptorRegistration.class);
+
+        when(registry.addInterceptor(any(LocaleChangeInterceptor.class))).thenReturn(registration);
+
+        new MessageConfig().addInterceptors(registry);
+
+        verify(registration).excludePathPatterns("/admin/payments/healthcheck");
     }
 }
