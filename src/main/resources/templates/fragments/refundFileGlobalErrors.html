@@ -7,20 +7,21 @@
 <body>
     <div th:fragment="globalErrors" th:if="${#fields.hasErrors('*')} or ${hasErrors}">
         <div th:if="${#fields.hasErrors('*')} or ${mandatoryFieldsMissing}" class="govuk-error-summary" role="alert" aria-labelledby="error-summary-heading" tabindex="-1">
-            <h2 class="govuk-error-summary__title" id="error-summary-heading">There is a problem</h2>
-            <p id="error-summary-subheading">We were unable to upload the file. Before you try uploading the file again, check that:</p>
+            <h2 class="govuk-error-summary__title" id="error-summary-heading" th:text="#{refund.validation.problem}">There is a problem</h2>
+            <p id="error-summary-subheading" th:text="#{refund.upload.validation.instructions}">We were unable to upload the file. Before you try uploading the file again, check that:</p>
             <ul class="govuk-list govuk-list--bullet">
-                <li>it is in XML format</li>
-                <li>it is 512kb or smaller</li>
-                <li>there are no data fields missing</li>
+                <li th:text="#{refund.upload.validation.xml}">it is in XML format</li>
+                <li th:text="#{refund.upload.validation.size}">it is 512kb or smaller</li>
+                <li th:text="#{refund.upload.validation.required-fields}">there are no data fields missing</li>
             </ul>
         </div>
         <div th:if="${validationFailed}" class="govuk-error-summary" role="alert" aria-labelledby="error-summary-title" tabindex="-1" data-module="govuk-error-summary">
-            <h2 class="govuk-error-summary__title" id="error-summary-title">There is a problem</h2>
+            <h2 class="govuk-error-summary__title" id="error-summary-title" th:text="#{refund.validation.problem}">There is a problem</h2>
             <div class="govuk-error-summary__body">
                 <ul class="govuk-list govuk-error-summary__list">
-                    <li>Some of the payments in this file are not eligible for a refund.</li>
-                    <li>You'll need to raise a ServiceNow ticket or contact the support team for help. </li>
+                    <li th:text="#{refund.validation.not-eligible}">Some of the payments in this file are not eligible for a refund.</li>
+                    <li th:text="#{refund.validation.contact-support}">You'll need to raise a ServiceNow ticket or contact the support team for help. </li>
+<!--                    value dynamically passed? to be completed-->
                     <p th:each="error: ${errorMessages}" th:text="'--' + ${error}"></p>
                 </ul>
             </div>

@@ -1,5 +1,7 @@
 package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 
+import org.springframework.context.MessageSource;
+import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +21,8 @@ public class RefundsSummaryController extends BaseController {
 
     private final PaymentService paymentService;
 
-    public RefundsSummaryController(PaymentService paymentService) {
+    public RefundsSummaryController(PaymentService paymentService, NavigatorService navigatorService, MessageSource messageSource) {
+        super(navigatorService, messageSource);
         this.paymentService = paymentService;
     }
 

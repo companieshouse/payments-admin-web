@@ -8,10 +8,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
+import org.springframework.ui.ExtendedModelMap;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import uk.gov.companieshouse.payments.admin.web.exception.ServiceException;
+import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import uk.gov.companieshouse.payments.admin.web.service.payment.PaymentService;
+import uk.gov.companieshouse.payments.admin.web.MessageConfig;
+
+import java.util.Locale;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -28,6 +35,12 @@ class RefundsSummaryControllerTest {
 
         @Mock
         private PaymentService mockPaymentService;
+
+        @Mock
+        private NavigatorService navigatorService;
+
+        @Mock
+        private MessageSource messageSource;
 
         @InjectMocks
         private RefundsSummaryController controller;
@@ -95,5 +108,28 @@ class RefundsSummaryControllerTest {
                 this.mockMvc.perform(post(REFUNDS_SUMMARY_PATH))
                         .andExpect(status().isOk())
                         .andExpect(view().name(REFUNDS_SUMMARY_VIEW));
+        }
+
+        @Test
+        @DisplayName("Adds English header resolved from the message bundle")
+        void addsEnglishHeaderFromMessageBundle() {
+                var controllerWithRealMessages = new RefundsSummaryController(
+                        mockPaymentService,
+                        navigatorService,
+                        new MessageConfig().messageSource());
+
+                LocaleContextHolder.setLocale(Locale.ENGLISH);
+                try {
+                        var model = new ExtendedModelMap();
+
+                        controllerWithRealMessages.addCommonAttributes(model);
+
+                        org.junit.jupiter.api.Assertions.assertEquals(
+                                "Payments service refunds", model.getAttribute("headerText"));
+                        org.junit.jupiter.api.Assertions.assertEquals(
+                                "/admin/payments/refunds", model.getAttribute("headerURL"));
+                } finally {
+                        LocaleContextHolder.resetLocaleContext();
+                }
         }
 }
