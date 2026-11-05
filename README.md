@@ -33,6 +33,11 @@ mvn test -Dtest=UserPermissionInterceptorTests   # a single test class
 | POST   | `/admin/payments/summary`                                             | Retry processing pending refunds                            |
 | GET    | `/admin/payments/healthcheck`                                         | Healthcheck                                                 |
 
+### Feature flags
+
+| Feature flag           | Description |
+|------------------------|-------------|
+|`FEATURE_FLAG_WELSH_LANG_ENABLED_031126` | Controls Welsh language support. Set per environment in `ecs-service-configs-dev`  `ecs-service-configs-production`; defaults to `false` when unset |
 
 
 # TESTING 
