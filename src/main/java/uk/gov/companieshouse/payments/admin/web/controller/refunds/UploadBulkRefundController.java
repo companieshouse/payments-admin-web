@@ -1,8 +1,5 @@
 package uk.gov.companieshouse.payments.admin.web.controller.refunds;
 
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import uk.gov.companieshouse.payments.admin.web.service.navigation.NavigatorService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,12 +34,8 @@ public class UploadBulkRefundController extends BaseController {
     private static final String VALIDATION_FAILED = "validationFailed";
     private static final String MANDATORY_FIELDS_MISSING = "mandatoryFieldsMissing";
 
+    @Autowired
     private PaymentService paymentService;
-
-    public UploadBulkRefundController(PaymentService paymentService, NavigatorService navigatorService, MessageSource messageSource) {
-        super(navigatorService, messageSource);
-        this.paymentService = paymentService;
-    }
 
     @Override protected String getTemplateName() {
         return UPLOAD_BULK_REFUND;
@@ -113,10 +106,8 @@ public class UploadBulkRefundController extends BaseController {
         } catch (Exception e) {
             LOGGER.error("Exception occurred when formatting validation error message: ", e);
             ValidationErrors = new ArrayList<>();
-            ValidationErrors.add(messageSource.getMessage(
-                    "refund.validation.display-failed",
-                    null,
-                    LocaleContextHolder.getLocale()));        }
+            ValidationErrors.add("Failed to display validation results");
+        }
         return ValidationErrors;
     }
 }

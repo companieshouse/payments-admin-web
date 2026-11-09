@@ -32,9 +32,6 @@ class NavigatorServiceTest {
     @RequestMapping("/test1/{id}")
     @NextController({TestController2.class})
     static class TestController1 extends BaseController {
-        TestController1() {
-            super(null, null);
-        }
         @Override
         protected String getTemplateName() { return "test1"; }
     }
@@ -42,9 +39,6 @@ class NavigatorServiceTest {
     @RequestMapping("/test2/{id}")
     @PreviousController({TestController1.class})
     static class TestController2 extends BaseController {
-        TestController2() {
-            super(null, null);
-        }
         @Override
         protected String getTemplateName() { return "test2"; }
     }
@@ -52,9 +46,6 @@ class NavigatorServiceTest {
     @RequestMapping("/branch/{id}")
     @NextController({TestController2.class})
     static class BranchTestController extends BaseController implements BranchController {
-        BranchTestController() {
-            super(null, null);
-        }
         @Override
         public boolean shouldBranch(String... pathVars) { return true; }
         @Override
@@ -64,9 +55,6 @@ class NavigatorServiceTest {
     @RequestMapping("/conditional/{a}/{b}/{c}")
     @NextController({TestController2.class})
     static class ConditionalTestController extends BaseController implements ConditionalController {
-        ConditionalTestController() {
-            super(null, null);
-        }
         @Override
         public boolean willRender(String a, String b, String c) { return true; }
         @Override
@@ -91,9 +79,6 @@ class NavigatorServiceTest {
     void testMissingNextControllerAnnotation_throws() {
         // No stubbing needed
         class NoNext extends BaseController {
-            NoNext() {
-                super(null, null);
-            }
             @Override protected String getTemplateName() { return "none"; }
         }
         Exception ex = assertThrows(MissingAnnotationException.class, () ->
@@ -106,9 +91,6 @@ class NavigatorServiceTest {
     void testMissingPreviousControllerAnnotation_throws() {
         // No stubbing needed
         class NoPrev extends BaseController {
-            NoPrev() {
-                super(null, null);
-            }
             @Override protected String getTemplateName() { return "none"; }
         }
         Exception ex = assertThrows(MissingAnnotationException.class, () ->

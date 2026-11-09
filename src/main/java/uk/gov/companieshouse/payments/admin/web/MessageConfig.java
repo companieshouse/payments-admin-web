@@ -42,7 +42,6 @@ public class MessageConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(localeChangeInterceptor())
-                .excludePathPatterns("/admin/payments/healthcheck");
+        registry.addInterceptor(localeChangeInterceptor());
     }
 }
