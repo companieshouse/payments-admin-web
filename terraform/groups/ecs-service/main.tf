@@ -35,9 +35,11 @@ module "ecs-service" {
   lb_listener_paths               = local.lb_listener_paths
 
   # ECS Task container health check
-  use_task_container_healthcheck = true
-  healthcheck_path               = local.healthcheck_path
-  healthcheck_matcher            = local.healthcheck_matcher
+  use_task_container_healthcheck    = true
+  healthcheck_path                  = local.healthcheck_path
+  healthcheck_matcher               = local.healthcheck_matcher
+  health_check_grace_period_seconds = 300
+  task_healthcheck_start_period     = var.task_healthcheck_start_period
 
   # Docker container details
   docker_registry   = var.docker_registry

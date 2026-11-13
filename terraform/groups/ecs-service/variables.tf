@@ -120,6 +120,10 @@ variable "log_level" {
   type        = string
   description = "The log level for services to use: trace, debug, info or error"
 }
+variable "task_healthcheck_start_period" {
+  type        = number
+  description = "Health check start period configuration for ECS task definitions."
+}
 variable "payments_admin_web_version" {
   type        = string
   description = "The version of the payment_admin_web container to run."
