@@ -9,3 +9,6 @@ log_level = "trace"
 service_autoscale_enabled  = true
 service_scaledown_schedule = "55 19 * * ? *"
 service_scaleup_schedule   = "5 6 * * ? *"
+
+# ECS task container health check
+task_healthcheck_start_period = 120
