@@ -15,10 +15,11 @@
 	<description>Admin web app for finance to manage payments</description>
 
 	<properties>
-        <ch-boms.version>0.1.28</ch-boms.version>
-        <spring-boot-dependencies.version>4.1.1</spring-boot-dependencies.version>
-        <common-web-java.version>5.0.0</common-web-java.version>
-		<private-api-sdk-java.version>7.2.33</private-api-sdk-java.version>
+        <ch-boms.version>0.1.42</ch-boms.version>
+        <spring-boot-dependencies.version>4.1.2</spring-boot-dependencies.version>
+        <common-web-java.version>6.0.1</common-web-java.version>
+		<private-api-sdk-java.version>7.2.53</private-api-sdk-java.version>
+		<org.json.json.version>20260719</org.json.json.version>
 	</properties>
 
 	<dependencyManagement>
@@ -45,7 +46,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -106,7 +106,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20260719</version>
+			<version>${org.json.json.version}</version>
 		</dependency>
 
 		<!-- Security dependencies -->
