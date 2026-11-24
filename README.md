@@ -8,6 +8,62 @@ The payments admin service is part of the chs-docker-development environment. It
 
 Users must be signed in and hold the `/admin/payments-bulk-refunds` permission. The permission is checked before the request reaches a controller; users without it receive a 404 "Page not found" response. The healthcheck endpoint is not restricted.
 
+#### Granting access in Docker CHS development
+
+Open a MongoDB shell from the `docker-chs-development` directory:
+
+```bash
+docker compose exec mongo mongosh
+# Alternatively:
+docker exec docker-chs-development-mongo-1 mongosh
+```
+
+In the shell, select the `account` database and look up your account and the Entra group mapped to the refund permission:
+
+```javascript
+use account
+
+const userEmail = "demo@ch.gov.uk"; // Or your signed-in user's email
+
+db.users.findOne(
+  { email: userEmail },
+  { email: 1, admin_user: 1, roles: 1 }
+)
+
+db.admin_permissions.find(
+  { permissions: "/admin/payments-bulk-refunds" },
+  { group_name: 1, entra_group_id: 1, permissions: 1 }
+)
+```
+
+The local mapping includes the `chs admin bulk refunds` Entra group. To grant the permission to an existing local test account, add that group's Entra ID to the account's `roles` array and set `admin_user` to `true`:
+
+```javascript
+const refundGroup = db.admin_permissions.findOne(
+  {
+    group_name: "chs admin bulk refunds",
+    permissions: "/admin/payments-bulk-refunds"
+  },
+  { entra_group_id: 1 }
+)
+
+if (!refundGroup) {
+  throw new Error("The refund permission group was not found")
+}
+
+const result = db.users.updateOne(
+  { email: userEmail },
+  {
+    $set: { admin_user: true },
+    $addToSet: { roles: refundGroup.entra_group_id }
+  }
+)
+
+printjson(result)
+```
+
+Set `userEmail` to either `demo@ch.gov.uk` or your signed-in user's email. Check that `matchedCount` is `1`; if it is `0`, sign in once to create the account before retrying. `$addToSet` preserves the account's other roles. Sign out and back in after the update to refresh the session. These changes apply only to the local Docker MongoDB; do not run them against shared test or staging databases.
+
 ### Build
 
 Requires Java 21 and Maven.
