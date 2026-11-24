@@ -19,7 +19,6 @@
         <spring-boot-dependencies.version>4.1.2</spring-boot-dependencies.version>
         <common-web-java.version>6.0.1</common-web-java.version>
 		<private-api-sdk-java.version>7.2.53</private-api-sdk-java.version>
-		<org.json.json.version>20260719</org.json.json.version>
 	</properties>
 
 	<dependencyManagement>
@@ -106,7 +105,6 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>${org.json.json.version}</version>
 		</dependency>
 
 		<!-- Security dependencies -->
